@@ -1,0 +1,4 @@
+# i3-wdog
+
+
+PERSONAL CONFIGURATION FOR i3 + gnome3

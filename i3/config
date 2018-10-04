@@ -1,0 +1,239 @@
+# vim: filetype=config
+
+# #---Basic Definitions---# #
+# Needed for i3-gaps
+set $mod Mod1
+set $term --no-startup-id   i3-sensible-terminal
+for_window [class="^.*"] border pixel 1
+gaps inner 10
+gaps outer 10
+font pango:Play 10
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+hide_edge_borders both
+##### WS ##############
+
+#workspace-edit
+set $ws1 "1 - Terminals  "
+set $ws2 "2 - Browser 🌍"
+set $ws3 "3 - Data  📁"
+set $ws4 "4 - Dev 🚀"
+set $ws5 "5 - Music 🎵 "
+set $ws6 "6 - Misc  💎"
+set $ws7 "7 - Mail 📩"
+
+
+for_window [class="Firefox"] move workspace $ws2
+
+for_window [class="Nautilus"] move workspace $ws3
+
+for_window [class="Spotify"] move workspace $ws5
+
+for_window [class="Gimp"] move workspace $ws5
+for_window [class="Vlc"] move workspace $ws5
+
+for_window [class="Thunderbird"] move workspace $ws7
+
+for_window [class="Remmina"] floating enable
+for_window [class="Vlc"] floating enable
+
+##### COLORS #############
+
+# Set Xresources colors:
+set_from_resource   $darkblack     color0    #000000
+set_from_resource   $black         color8    #1c1c1c
+set_from_resource   $darkred       color1    #d70000
+set_from_resource   $red           color9    #d75f00
+set_from_resource   $darkgreen     color2    #d60000
+set_from_resource   $green         color10   #5f8700
+set_from_resource   $darkyellow    color3    #af8700
+set_from_resource   $yellow        color11   #626262
+set_from_resource   $darkblue      color4    #0087ff
+set_from_resource   $blue          color12   #8888cc
+set_from_resource   $darkmagenta   color5    #5f5faf
+set_from_resource   $magenta       color13   #af005f
+set_from_resource   $darkcyan      color6    #00afaf
+set_from_resource   $cyan          color14   #00afaf
+set_from_resource   $darkwhite     color7    #ffffd7
+set_from_resource   $white         color15   #ffffff
+set $transparent    #00000000
+
+#                         BORDER         BACKGROUND   TEXT       INDICATOR      CHILD_BORDER
+client.focused          #3F8AC2 #096BAA #00BAA7 #00DA8E
+client.focused_inactive #333333 #5F676A #ffffff #484e50
+client.unfocused        #333333 #424242 #888888 #292d2e
+client.urgent           #C10004 #900000 #ffffff #900000
+
+
+#client.focused            #0088AA   #0088CC #ffffff   #2e9ef4
+#client.focused_inactive #181818 #282828 #b8b8b8 #585858
+#client.unfocused        #181818 #282828 #585858 #383838
+#client.urgent           #181818 #282828 #ab4642 #383838
+
+client.background #181818
+
+
+client.background         $black
+#client.focused            $red           $red         $black     $darkmagenta   $darkblue
+#client.unfocused          $transparent   $blue        $white     $darkblue      $darkblack
+#client.focused_inactive   $transparent   $blue        $white     $darkblue      $darkblack
+#client.urgent             $darkred       $darkred     $black     $darkred       $darkred
+
+
+##### BAR #################
+
+bar {
+  font pango:Play 10
+  status_command i3status
+    position top
+    colors {
+      separator          #666666
+        background         #33000000
+        statusline         #ffffff
+        focused_workspace  #0088CC #0088CC #ffffff
+        active_workspace   #333333 #333333 #ffffff
+        inactive_workspace #333333 #333333 #888888
+        urgent_workspace   #2f343a #900000 #ffffff
+    }
+}
+
+
+
+###### START ##############
+
+
+exec --no-startup-id compton -f
+exec --no-startup-id nm-applet
+# Starts dunst for notifications:
+#exec --no-startup-id dunst
+
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
+exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
+exec --no-startup-id conky
+exec --no-startup-id feh --bg-scale ~/Immagini/walls/2915360-blackout-wallpapers.jpg
+
+###### BIND ##############
+
+# kill window focused
+bindsym $mod+q kill
+
+# start a terminal
+bindsym $mod+Return exec i3-sensible-terminal
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# htop
+bindsym $mod+i 			exec $term -e htop
+
+# pulse mixer
+bindsym $mod+Shift+a		exec $term -e pulsemixer
+
+# dmenu
+bindsym $mod+d			exec --no-startup-id dmenu_run
+bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
+
+# rofi bindings
+bindsym F10 exec rofi -modi drun -show drun -lines 10 -eh 3 -width 100 -padding 700 " -bw 0 -opacity "50 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+#bindsym F10 exec rofi -show run   -lines 3 -eh 2 -width 100 -padding 800 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Droid Sans Regular 12"
+bindsym F12 exec rofi -show window -lines 10 -eh 2 -width 700 -padding 30 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+
+# quit i3
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Yes, exit i3' 'gnome-session-quit --force --logout'"
+
+#phpstorm
+bindsym $mod+F3 exec ~/bin/PhpStorm-173.4674.45/bin/phpstorm.sh
+bindsym $mod+F4 exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe
+bindsym $mod+F5 exec ~/bin/TiddlyDesktop-linux64-v0.0.13/nw 
+bindsym $mod+Shift+f exec nautilus 
+
+# mode resize
+bindsym $mod+r mode "resize"
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%
+bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
+
+
+# change focus
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+
+##### MODE #####################
+
+mode "resize" {
+# These bindings trigger as soon as you enter the resize mode
+
+# Pressing left will shrink the window’s width.
+# Pressing right will grow the window’s width.
+# Pressing up will shrink the window’s height.
+# Pressing down will grow the window’s height.
+  bindsym j resize shrink width 10 px or 10 ppt
+    bindsym k resize grow height 10 px or 10 ppt
+    bindsym l resize shrink height 10 px or 10 ppt
+    bindsym ograve resize grow width 10 px or 10 ppt
+
+# same bindings, but for the arrow keys
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
+
+# back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
