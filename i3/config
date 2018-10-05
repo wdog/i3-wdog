@@ -5,8 +5,8 @@
 set $mod Mod1
 set $term --no-startup-id   i3-sensible-terminal
 for_window [class="^.*"] border pixel 1
-gaps inner 10
-gaps outer 10
+gaps inner 7
+gaps outer 7
 font pango:Play 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -40,45 +40,11 @@ for_window [class="Vlc"] floating enable
 ##### COLORS #############
 
 # Set Xresources colors:
-set_from_resource   $darkblack     color0    #000000
-set_from_resource   $black         color8    #1c1c1c
-set_from_resource   $darkred       color1    #d70000
-set_from_resource   $red           color9    #d75f00
-set_from_resource   $darkgreen     color2    #d60000
-set_from_resource   $green         color10   #5f8700
-set_from_resource   $darkyellow    color3    #af8700
-set_from_resource   $yellow        color11   #626262
-set_from_resource   $darkblue      color4    #0087ff
-set_from_resource   $blue          color12   #8888cc
-set_from_resource   $darkmagenta   color5    #5f5faf
-set_from_resource   $magenta       color13   #af005f
-set_from_resource   $darkcyan      color6    #00afaf
-set_from_resource   $cyan          color14   #00afaf
-set_from_resource   $darkwhite     color7    #ffffd7
-set_from_resource   $white         color15   #ffffff
-set $transparent    #00000000
-
-#                         BORDER         BACKGROUND   TEXT       INDICATOR      CHILD_BORDER
-client.focused          #3F8AC2 #096BAA #00BAA7 #00DA8E
-client.focused_inactive #333333 #5F676A #ffffff #484e50
-client.unfocused        #333333 #424242 #888888 #292d2e
-client.urgent           #C10004 #900000 #ffffff #900000
-
-
-#client.focused            #0088AA   #0088CC #ffffff   #2e9ef4
-#client.focused_inactive #181818 #282828 #b8b8b8 #585858
-#client.unfocused        #181818 #282828 #585858 #383838
-#client.urgent           #181818 #282828 #ab4642 #383838
-
-client.background #181818
-
-
-client.background         $black
-#client.focused            $red           $red         $black     $darkmagenta   $darkblue
-#client.unfocused          $transparent   $blue        $white     $darkblue      $darkblack
-#client.focused_inactive   $transparent   $blue        $white     $darkblue      $darkblack
-#client.urgent             $darkred       $darkred     $black     $darkred       $darkred
-
+client.focused            #3F8AC2   #096BAA      #00BAA7   #00DA8E
+client.focused_inactive   #333333   #5F676A      #ffffff   #484e50
+client.unfocused          #333333   #424242      #888888   #292d2e
+client.urgent             #C10004   #900000      #ffffff   #900000
+client.background         #181818
 
 ##### BAR #################
 
@@ -115,7 +81,7 @@ exec --no-startup-id feh --bg-scale ~/Immagini/walls/2915360-blackout-wallpapers
 ###### BIND ##############
 
 # kill window focused
-bindsym $mod+q kill
+bindsym $mod+Shift+q kill
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
@@ -126,30 +92,21 @@ bindsym $mod+Shift+r restart
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
-# htop
-bindsym $mod+i 			exec $term -e htop
-
-# pulse mixer
-bindsym $mod+Shift+a		exec $term -e pulsemixer
-
 # dmenu
 bindsym $mod+d			exec --no-startup-id dmenu_run
 bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
 
 # rofi bindings
-bindsym F10 exec rofi -modi drun -show drun -lines 10 -eh 3 -width 100 -padding 700 " -bw 0 -opacity "50 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
-#bindsym F10 exec rofi -show run   -lines 3 -eh 2 -width 100 -padding 800 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Droid Sans Regular 12"
-bindsym F12 exec rofi -show window -lines 10 -eh 2 -width 700 -padding 30 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+#bindsym F10 exec rofi -modi drun -show drun -lines 10 -eh 3 -width 100 -padding 700 " -bw 0 -opacity "50 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+bindsym F10 exec rofi -show run   -lines 3 -eh 2 -width 100 -padding 800 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+
+# F12 used by firefox dev tools
+bindsym F8 exec rofi -show window -lines 10 -eh 2 -width 700 -padding 30 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
 
 # quit i3
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Yes, exit i3' 'gnome-session-quit --force --logout'"
 
-#phpstorm
-bindsym $mod+F3 exec ~/bin/PhpStorm-173.4674.45/bin/phpstorm.sh
-bindsym $mod+F4 exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe
-bindsym $mod+F5 exec ~/bin/TiddlyDesktop-linux64-v0.0.13/nw 
-bindsym $mod+Shift+f exec nautilus 
 
 # mode resize
 bindsym $mod+r mode "resize"
@@ -158,12 +115,12 @@ bindsym $mod+r mode "resize"
 
 #bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-high
 #bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-low
-bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle; exec notify-send "Mute: " -i notification-audio-volume-muted
-
 
 set $volume --no-startup-id osd_cat -b percentage -P $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -T Volume: -d 1 -c green -p bottom -i 100 -o 30 -O 1 -u '#000000'  
+
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%; exec killall osd_cat; exec $volume
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%; exec killall osd_cat; exec $volume
+bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle; exec notify-send "Mute: " -i notification-audio-volume-muted
 
 
 # change focus
@@ -227,7 +184,7 @@ mode "resize" {
 # Pressing right will grow the window’s width.
 # Pressing up will shrink the window’s height.
 # Pressing down will grow the window’s height.
-  bindsym j resize shrink width 10 px or 10 ppt
+    bindsym j resize shrink width 10 px or 10 ppt
     bindsym k resize grow height 10 px or 10 ppt
     bindsym l resize shrink height 10 px or 10 ppt
     bindsym ograve resize grow width 10 px or 10 ppt
@@ -243,3 +200,30 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 
+
+
+bindsym $mod+o mode "$mode_launcher"
+
+mode "$mode_launcher" {
+    # a == audio 
+    bindsym a	exec $term -e pulsemixer
+    # f == firefox
+    bindsym f exec firefox
+    # i == info
+    bindsym i exec $term -e htop
+    # n == nautilus
+    bindsym n exec nautilus 
+    # o == office 
+    bindsym o exec libreoffice
+    # p == phpstorm
+    bindsym p exec ~/bin/PhpStorm-173.4674.45/bin/phpstorm.sh
+    # s == sql
+    bindsym s exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe
+    # t == thunderbird
+    bindsym t exec thunderbird
+    # w == tiddlwiki
+    bindsym w exec ~/bin/TiddlyDesktop-linux64-v0.0.13/nw 
+
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
