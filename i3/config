@@ -1,106 +1,288 @@
-###############################################################################
-# ceerious i3 status config
-# see "man i3status" for documentation.
-#
-# It is important that this file is edited as UTF-8.
-# The following line should contain a sharp s:
-# ß
-# If the above line is not correctly displayed, fix your editor first!
-###############################################################################
+# vim: filetype=config
 
-general {
-    interval = 1
-    colors = true
-    color_good = '#a6e22e'
-    color_degraded = '#FD971F'
-    color_bad = '#e89393'
+# #---Basic Definitions---# #
+# Needed for i3-gaps
+set $mod Mod1
+set $term --no-startup-id   i3-sensible-terminal
+for_window [class="^.*"] border pixel 1
+set $height 34
+gaps inner 7
+gaps outer 7
+font pango:Play 10
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+hide_edge_borders both
+##### WS ##############
+
+#workspace-edit
+#set $ws1 "1 - Terminals  "
+#set $ws2 "2 - Browser 🌍"
+#set $ws3 "3 - Data  📁"
+#set $ws4 "4 - Dev 🚀"
+#set $ws5 "5 - Music 🎵 "
+#set $ws6 "6 - Misc  💎"
+#set $ws7 "7 - Mail 📩"
+
+set $ws1  "1:   "
+set $ws2  "2:   "
+set $ws3  "3:   "
+set $ws4  "4:   "
+set $ws5  "5: 🎩 "
+set $ws6  "6: 🚀 "
+set $ws7  "7:   "
+set $ws8  "8: 🦇"
+set $ws9  "9:   "
+set $ws10 "10:   "
+
+workspace_auto_back_and_forth yes
+force_display_urgency_hint 0 ms
+focus_on_window_activation urgent
+
+
+# use xprop -> WM_CLASS(STRING) = "gnome-terminal-server", "Gnome-terminal"
+for_window [class="Firefox"] move workspace $ws1
+
+for_window [class="Nautilus"] move workspace $ws5
+
+for_window [class="Spotify"] move workspace $ws7
+
+for_window [class="Gimp"] move workspace $ws6
+
+for_window [class="vlc"] move workspace $ws8
+for_window [class="vlc"] floating enable
+
+for_window [class="Thunderbird"] move workspace $ws9
+
+for_window [class="Remmina"] floating enable
+
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [class="(?i)nm-connection-editor"] floatofor_window [class="(?i)pavucontrol"] floating enable, move position mouse
+for_window [class="(?i)pavucontrol" instance="pavucontrol-bar"] move down $height pxing enable
+
+##### COLORS #############
+
+set_from_resource $darkred     color1  #000000
+set_from_resource $red         color9  #000000
+set_from_resource $darkgreen   color2  #000000
+set_from_resource $green       color10 #000000
+set_from_resource $darkyellow  color3  #000000
+set_from_resource $yellow      color11 #000000
+set_from_resource $darkblue    color4  #000000
+set_from_resource $blue        color12 #000000
+set_from_resource $darkmagenta color5  #000000
+set_from_resource $magenta     color13 #000000
+set_from_resource $darkcyan    color6  #000000
+set_from_resource $cyan        color14 #000000
+set_from_resource $darkwhite   color7  #000000
+set_from_resource $white       color15 #000000
+# Use custom colors for black
+set $black       #282828
+set $darkblack   #1d2021
+set $transparent #00000000
+
+#                         BORDER     BACKGROUND   TEXT        INDICATOR    CHILD_BORDER
+client.focused            $black    $white    $darkblack      $white     $white 
+client.unfocused          $black     $black       $white      $darkblack   $darkblack
+client.focused_inactive   $black     $black       $white      $darkblack   $darkblack
+client.urgent             $darkred   $darkred     $black      $darkred     $darkred
+client.background         $black
+
+
+##### BAR #################
+
+bar {
+    font pango:Play 10
+    #i3bar_command i3bar -t
+    separator_symbol "■"
+    #     strip_workspace_numbers yes
+    status_command i3status
+    position top
+
+      colors {
+        statusline         $white
+        background         $transparent
+        separator          $transparent
+
+#                          BORDER       BACKGROUND   TEXT
+        focused_workspace  $transparent $transparent #00FF00
+        inactive_workspace $transparent $transparent $white
+        active_workspace   $transparent $transparent $white
+        urgent_workspace   $darkred     $darkred     $transparent
+        binding_mode       $darkred     $darkred     $transparent
+}
+  }
+
+
+
+  ###### START ##############
+
+
+  exec --no-startup-id compton -f
+  exec --no-startup-id nm-applet
+  # Starts dunst for notifications:
+  #exec --no-startup-id dunst
+
+  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
+  exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
+  exec --no-startup-id conky
+  exec --no-startup-id feh --bg-scale ~/Immagini/walls/2915360-blackout-wallpapers.jpg
+
+  ###### BIND ##############
+
+  # kill window focused
+  bindsym $mod+Shift+q kill
+
+  # start a terminal
+  bindsym $mod+Return exec i3-sensible-terminal
+
+  # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+  bindsym $mod+Shift+r restart
+
+  # reload the configuration file
+  bindsym $mod+Shift+c reload
+
+  # dmenu
+  bindsym $mod+d			exec --no-startup-id dmenu_run
+  bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
+
+  # rofi bindings
+  #bindsym F10 exec rofi -modi drun -show drun -lines 10 -eh 3 -width 100 -padding 700 " -bw 0 -opacity "50 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+  bindsym F10 exec rofi -show run   -lines 3 -eh 2 -width 100 -padding 800 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+
+  # F12 used by firefox dev tools
+  bindsym F8 exec rofi -show window -lines 10 -eh 2 -width 700 -padding 30 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+
+  # quit i3
+  bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+  #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Yes, exit i3' 'gnome-session-quit --force --logout'"
+
+
+  # mode resize
+  bindsym $mod+r mode "resize"
+
+  ##### Pulse Audio controls
+
+  #bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-high
+  #bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-low
+
+  set $volume --no-startup-id osd_cat -b percentage -P $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -T Volume: -d 1 -c green -p bottom -i 100 -o 30 -O 1 -u '#000000'  
+
+  bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%; exec killall osd_cat; exec $volume
+  bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%; exec killall osd_cat; exec $volume
+  bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle; exec notify-send "Mute: " -i notification-audio-volume-muted
+
+
+  # screenshot
+  bindsym --release Print exec --no-startup-id "maim -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
+  bindsym --release Shift+Print exec --no-startup-id "maim -s -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
+
+
+  # change focus
+  bindsym $mod+Left focus left
+  bindsym $mod+Down focus down
+  bindsym $mod+Up focus up
+  bindsym $mod+Right focus right
+
+  # alternatively, you can use the cursor keys:
+  bindsym $mod+Shift+Left move left
+  bindsym $mod+Shift+Down move down
+  bindsym $mod+Shift+Up move up
+  bindsym $mod+Shift+Right move right
+
+  # split in horizontal orientation
+  bindsym $mod+h split h
+
+  # split in vertical orientation
+  bindsym $mod+v split v
+
+  # enter fullscreen mode for the focused container
+  bindsym $mod+f fullscreen toggle
+
+  # change container layout (stacked, tabbed, toggle split)
+  bindsym $mod+s layout stacking
+  bindsym $mod+w layout tabbed
+  bindsym $mod+e layout toggle split
+
+  # toggle tiling / floating
+  bindsym $mod+Shift+space floating toggle
+
+  # change focus between tiling / floating windows
+  bindsym $mod+space focus mode_toggle
+
+  # focus the parent container
+  bindsym $mod+a focus parent
+  # switch to workspace
+  bindsym $mod+1 workspace $ws1
+  bindsym $mod+2 workspace $ws2
+  bindsym $mod+3 workspace $ws3
+  bindsym $mod+4 workspace $ws4
+  bindsym $mod+5 workspace $ws5
+  bindsym $mod+6 workspace $ws6
+  bindsym $mod+7 workspace $ws7
+  bindsym $mod+8 workspace $ws8
+  bindsym $mod+9 workspace $ws9
+  bindsym $mod+0 workspace $ws10
+
+  # move focused container to workspace
+  bindsym $mod+Shift+1 move container to workspace $ws1
+  bindsym $mod+Shift+2 move container to workspace $ws2
+  bindsym $mod+Shift+3 move container to workspace $ws3
+  bindsym $mod+Shift+4 move container to workspace $ws4
+  bindsym $mod+Shift+5 move container to workspace $ws5
+  bindsym $mod+Shift+6 move container to workspace $ws6
+  bindsym $mod+Shift+7 move container to workspace $ws7
+  bindsym $mod+Shift+8 move container to workspace $ws8
+  bindsym $mod+Shift+9 move container to workspace $ws9
+  bindsym $mod+Shift+0 move container to workspace $ws10
+  bindsym $mod+Tab workspace back_and_forth
+
+  ##### MODE #####################
+
+  mode "resize" {
+  # These bindings trigger as soon as you enter the resize mode
+  bindsym j resize shrink width 10 px or 10 ppt
+  bindsym k resize grow height 10 px or 10 ppt
+  bindsym l resize shrink height 10 px or 10 ppt
+  bindsym ograve resize grow width 10 px or 10 ppt
+
+  # same bindings, but for the arrow keys
+  bindsym Left resize shrink width 10 px or 10 ppt
+  bindsym Down resize grow height 10 px or 10 ppt
+  bindsym Up resize shrink height 10 px or 10 ppt
+  bindsym Right resize grow width 10 px or 10 ppt
+
+  # back to normal: Enter or Escape
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
 }
 
-order += "volume master"
-#order += "disk /"
-#order += "disk /data"
-order += "disk /home"
-#order += "run_watch DHCP"
-#order += "ipv6"
-#order += "run_watch VPN"
-order += "wireless wlp3s0"
-order += "ethernet eno1"
-order += "battery 0"
-order += "cpu_temperature 0"
-order += "cpu_usage 0"
-order += "load"
-order += "tztime local"
 
-wireless wlp3s0 {
-    format_up = "%quality  %essid %ip"
-    format_down = ""
+
+bindsym $mod+o mode "$mode_launcher"
+
+mode "$mode_launcher" {
+# a == audio 
+bindsym a	exec $term -e pulsemixer
+# c == chrome
+bindsym c exec google-chrome
+# f == firefox
+bindsym f exec firefox
+# i == info
+bindsym i exec $term -e htop
+# n == nautilus
+bindsym n exec nautilus 
+# o == office 
+bindsym o exec libreoffice
+# p == phpstorm
+bindsym p exec ~/bin/PhpStorm-173.4674.45/bin/phpstorm.sh
+# s == sql
+bindsym s exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe
+# t == thunderbird
+bindsym t exec thunderbird
+# w == tiddlwiki
+bindsym w exec ~/bin/TiddlyDesktop-linux64-v0.0.13/nw 
+
+bindsym Escape mode "default"
+bindsym Return mode "default"
 }
-
-ethernet eno1 {
-    #if you use %speed, i3status requires root privileges
-    format_up = "   %ip (%speed)"
-    format_down = ""
-}
-
-battery 0 {
-    format = "%status %percentage %remaining"
-    format_down = ""
-    last_full_capacity = true
-    integer_battery_capacity = true
-    low_threshold = 11
-    threshold_type = percentage
-    hide_seconds = true
-    status_chr = " "
-    status_bat = " "
-    status_unk = " "
-    status_full = " "
-}
-
-run_watch DHCP {
-    pidfile = "/var/run/dhclient*.pid"
-}
-
-run_watch VPN {
-    pidfile = "/var/run/vpnc/pid"
-}
-#year-month-day hour:minute:second
-#%Y-%m-%d %H:%M:%S'`
-tztime local {
-    format = "🗓️ %d.%m %Y  %H:%M:%S"
-}
-
-load {
-    format = "📊 %1min"
-}
-
-cpu_usage {
-    format = "  %usage"
-}
-
-cpu_temperature 0 {
-	format = "🌡️ %degrees°C"
-}
-
-disk "/" {
-	format = " %avail"
-	prefix_type	= custom
-	low_threshold = 20
-	threshold_type = percentage_avail
-}
-
-disk "/data" {
-        format = " %avail"
-        prefix_type     = custom
-        low_threshold = 20
-        threshold_type = percentage_avail
-}
-
-
-volume master {
-    format = "🔊 %volume"
-    format_muted = "🔇"
-    device = "default"
-    mixer = "Master"
-    mixer_idx = 0
-}
-
