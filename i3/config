@@ -22,7 +22,7 @@ set $ws5 "5 - Music 🎵 "
 set $ws6 "6 - Misc  💎"
 set $ws7 "7 - Mail 📩"
 
-
+# use xprop -> WM_CLASS(STRING) = "gnome-terminal-server", "Gnome-terminal"
 for_window [class="Firefox"] move workspace $ws2
 
 for_window [class="Nautilus"] move workspace $ws3
@@ -30,12 +30,13 @@ for_window [class="Nautilus"] move workspace $ws3
 for_window [class="Spotify"] move workspace $ws5
 
 for_window [class="Gimp"] move workspace $ws5
-for_window [class="Vlc"] move workspace $ws5
+
+for_window [class="vlc"] move workspace $ws5
+for_window [class="vlc"] floating enable
 
 for_window [class="Thunderbird"] move workspace $ws7
 
 for_window [class="Remmina"] floating enable
-for_window [class="Vlc"] floating enable
 
 ##### COLORS #############
 
@@ -207,6 +208,8 @@ bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
     # a == audio 
     bindsym a	exec $term -e pulsemixer
+    # c == chrome
+    bindsym c exec google-chrome
     # f == firefox
     bindsym f exec firefox
     # i == info
