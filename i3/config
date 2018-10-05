@@ -155,8 +155,8 @@ bindsym $mod+Shift+f exec nautilus
 bindsym $mod+r mode "resize"
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}')
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}')
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
 
 
