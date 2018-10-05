@@ -154,10 +154,16 @@ bindsym $mod+Shift+f exec nautilus
 # mode resize
 bindsym $mod+r mode "resize"
 
-# Pulse Audio controls
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}')
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}')
-bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle
+##### Pulse Audio controls
+
+#bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-high
+#bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-low
+bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle; exec notify-send "Mute: " -i notification-audio-volume-muted
+
+
+set $volume --no-startup-id osd_cat -b percentage -P $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -T Volume: -d 1 -c green -p bottom -i 100 -o 30 -O 1 -u '#000000'  
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%; exec killall osd_cat; exec $volume
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%; exec killall osd_cat; exec $volume
 
 
 # change focus
