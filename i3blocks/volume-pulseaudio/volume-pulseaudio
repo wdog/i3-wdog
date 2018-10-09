@@ -1,0 +1,38 @@
+#!/bin/bash
+
+signal=${SIGNAL:-0} 
+
+function main() {
+  type pactl &> /dev/null || return 1
+
+  local volume=$(pactl list sinks | grep 'Volume' | grep -o '[0-9]*%' | head -1 | tr -d '%')
+  local muted=$(pactl list sinks | grep 'Mute' | sed 's/[[:space:]]//g' | cut -d: -f2 | head -1)
+  local blocks=$(seq -f '%02g' -s '' 1 5 ${volume} | sed 's/.\{2\}/■/g')
+  local spaces=$(seq -s ' ' ${volume} 5 100 | tr -d '[:digit:]')
+
+  [[ ${muted} == 'no' ]] && local color='#FF7E00' || local color='#999999'
+    echo -e "[${blocks}${spaces}]\n[${blocks}${spaces}]\n${color}"; 
+      
+}
+
+
+main
+
+if [[ -z "$MIXER" ]] ; then
+    MIXER="default"
+    if amixer -D pulse info >/dev/null 2>&1 ; then
+        MIXER="pulse"
+    fi
+fi
+
+if [[ -z "$SCONTROL" ]] ; then
+    SCONTROL=$(amixer -D "$MIXER" scontrols | sed -n "s/Simple mixer control '\([^']*\)',0/\1/p" | head -n1)
+fi
+
+
+CAPABILITY=$(amixer -D $MIXER get $SCONTROL | sed -n "s/  Capabilities:.*cvolume.*/Capture/p")
+
+case $BLOCK_BUTTON in
+    2) amixer -q -D $MIXER sset $SCONTROL $CAPABILITY toggle ;;
+
+esac

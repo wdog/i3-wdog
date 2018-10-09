@@ -9,3 +9,8 @@ PERSONAL CONFIGURATION FOR i3 (i3-gaps) + gnome3
 
 i3-gaps https://github.com/Airblader/i3
 
+
+!packages suggested
+
+yad
+ranger
