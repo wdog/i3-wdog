@@ -11,10 +11,10 @@ conky.config = {
     draw_outline = false,
     draw_shades = false,
     use_xft = true,
-    font = 'Play:size=10',
+    font = 'Play:size=11',
     gap_x = 1,
-    gap_y = 3,
-    minimum_height = 5,
+    gap_y = 1,
+    minimum_height = 1,
     minimum_width = 1920,
     net_avg_samples = 2,
     no_buffers = true,
@@ -42,5 +42,5 @@ conky.config = {
 }
 
 conky.text = [[
-${color3}Time: ${color4}${time %I:%M:%S} ${color5}| ${color3}Date: ${color4}${time %a}, ${time %d} ${time  %B} ${time %Y} ${color5}| ${color3} Uptime: ${color2} $uptime ${color5}| ${color3}Processes: ${color2}${processes} / ${running_processes} ${color5}| ${color 9e6ffe}CPU: ${color d3d3d3}${cpu}% / ${color6}${hwmon temp 1}°C ${color5}| ${color3}RAM: ${color2}$memperc% ${color5}| ${color6}Root: ${color e0e0e0}${fs_free /} / ${fs_size /} ${color5} | ${color a6e22e} DOWN:${color3} ${downspeed eno1} Kb/s | ${color D45959} UP:  ${color3} ${upspeed   eno1} Kb/s | ${color3} IP: ${color1} ${addr eno1} ${color}| GW ${execp ~/bin/ping_gw.sh 192.168.169.1} | GOOGLE ${execp ~/bin/ping_gw.sh 8.8.8.8} | CPU: ${color2 }${top name 1}${color} MEM: ${color2} ${top_mem name 1} ${color} | ${memgraph 15,120 00ff00 ffff00 -l}
+${color3}${font FontAwesome}${font} ${color2} $uptime ${color5} | ${color3}${font FontAwesome}   ${font} ${color2}${processes} / ${running_processes} ${color5} | ${color3}${hwmon temp 1}°C ${color5} | ${color3}${font FontAwesome}   ${font}(c) ${color2}${cpu}%${color5} | ${color3}${font FontAwesome}   ${font}(m) ${color2}$memperc% ${color5} | ${color3}${font FontAwesome}   ${font} ${color2}${fs_free /} / ${fs_size /} ${color5} | ${color6}${font FontAwesome}   ${font} ${downspeed eno1} Kb/s${color5} | ${color4}${font FontAwesome}   ${font} ${upspeed eno1} Kb/s${color5} | ${color3}IP: ${color2} ${addr eno1} ${color5}| ${color3}${font FontAwesome}   ${font} ${execp ~/bin/ping_gw.sh 192.168.169.1}${color5} | ${color3}${font FontAwesome}   ${font} ${execp ~/bin/ping_gw.sh www.google.com}${color5} | ${color3}${font FontAwesome}   ${font}(c) ${color2} ${top name 1} ${color5} | ${color3}${font FontAwesome}   ${font}(m) ${color2} ${top_mem name 1} ${color5} 
 ]]

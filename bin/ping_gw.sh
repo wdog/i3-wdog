@@ -13,4 +13,3 @@ then
 else
   echo '${color red}KO${color}'
 fi
-
