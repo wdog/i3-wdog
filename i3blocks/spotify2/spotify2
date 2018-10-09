@@ -43,5 +43,4 @@ try:
     exit
 #except dbus.exceptions.DBusException:
 except dbus.DBusException as ex:
-    print (ex)
     exit
