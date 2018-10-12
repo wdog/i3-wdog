@@ -43,8 +43,8 @@ focus_on_window_activation urgent
 # use xprop -> WM_CLASS(STRING) = "gnome-terminal-server", "Gnome-terminal"
 
 assign [class="Navigator"] $ws1
+assign [class="Nautilus"] $ws5
 
-for_window [class="Nautilus"] move workspace $ws5
 
 for_window [class="vlc"] move workspace $ws8
 for_window [class="vlc"] floating enable
@@ -72,6 +72,7 @@ for_window [class="Lxappearance"] floating enable sticky enable border normal
 for_window [title="alsamixer"] floating enable border pixel 1
 for_window [urgent=latest] focus
 for_window [class="Yad"] floating enable
+for_window [class="Gnome-calculator"] floating enable
 ##### COLORS #############
 
 set_from_resource $darkred     color1  #000000
@@ -111,7 +112,7 @@ bar {
     #status_command i3status | /srv/repo/i3spotifystatus/pystatus.py
     status_command i3blocks
 
-    output primary
+     #output primary
     position top
 
       colors {
@@ -143,6 +144,7 @@ bar {
   exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
   exec --no-startup-id conky
   exec --no-startup-id feh --bg-scale ~/Immagini/walls/2915360-blackout-wallpapers.jpg
+  exec --no-startup-id xautolock -time 10 -locker 'i3lock -d -c 000000'
   #exec --no-startup-id exec xrand DVI --off 
   ###### BIND ##############
 
@@ -283,26 +285,47 @@ bindsym $mod+o mode "$mode_launcher"
 mode "$mode_launcher" {
 # a == audio 
 
-bindsym a	exec $term -e pulsemixer
+bindsym a	exec $term -e pulsemixer; mode "default"
 # c == chrome
-bindsym c exec google-chrome
+bindsym c exec google-chrome; mode "default"
 # f == firefox
-bindsym f exec firefox
+bindsym f exec firefox; mode "default"
 # i == info
-bindsym i exec $term -e htop
+bindsym i exec $term -e htop; mode "default"
+# m == calculator
+bindsym m exec gnome-calculator; mode "default"
 # n == nautilus
-bindsym n exec nautilus 
+bindsym n exec nautilus ; mode "default"
 # o == office 
-bindsym o exec libreoffice
+bindsym o exec libreoffice; mode "default"
 # p == phpstorm
-bindsym p exec ~/bin/PhpStorm-173.4674.45/bin/phpstorm.sh
+bindsym p exec ~/bin/PhpStorm-173.4674.45/bin/phpstorm.sh; mode "default"
 # s == sql
-bindsym s exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe
+bindsym s exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe; mode "default"
 # t == thunderbird
-bindsym t exec thunderbird
+bindsym t exec thunderbird; mode "default"
 # w == tiddlwiki
-bindsym w exec ~/bin/TiddlyDesktop-linux64-v0.0.13/nw 
+bindsym w exec ~/bin/TiddlyDesktop-linux64-v0.0.13/nw ; mode "default"
 
 bindsym Escape mode "default"
 bindsym Return mode "default"
 }
+
+
+set $Locker /usr/local/bin/lock_and_blur.sh && sleep 1
+
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+y mode "$mode_system"
