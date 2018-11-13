@@ -3,11 +3,13 @@
 # #---Basic Definitions---# #
 # Needed for i3-gaps
 set $mod Mod1
-set $term --no-startup-id   i3-sensible-terminal
+#set $term --no-startup-id   i3-sensible-terminal
+set $term --no-startup-id   xfce4-terminal
 for_window [class="^.*"] border pixel 1
 set $height 34
-gaps inner 7
-gaps outer 7
+
+gaps inner 10
+gaps outer 5
 font pango:Play 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -23,44 +25,50 @@ hide_edge_borders both
 #set $ws6 "6 - Misc  💎"
 #set $ws7 "7 - Mail 📩"
 
-set $ws1  "1:   "
-set $ws2  "2:   "
-set $ws3  "3:   "
-set $ws4  "4:   "
-set $ws5  "5: 🎩 "
-set $ws6  "6: 🚀 "
-set $ws7  "7:   "
-set $ws8  "8: 🦇"
-set $ws9  "9:   "
-set $ws10 "10:   "
+set $ws1  "1"
+set $ws2  "2"
+set $ws3  "3"
+set $ws4  "4"
+set $ws5  "5"
+set $ws6  "6"
+set $ws7  "7"
+set $ws8  "8"
+set $ws9  "9"
+set $ws10 "10"
+
 
 workspace_auto_back_and_forth yes
 focus_follows_mouse no
 force_display_urgency_hint 0 ms
 focus_on_window_activation urgent
+floating_minimum_size 150x100
+# set popups during fullscreen mode
+popup_during_fullscreen smart
 
-
+# switching window with win+tab
+bindsym $mod+Tab exec --no-startup-id rofi -show window
 # use xprop -> WM_CLASS(STRING) = "gnome-terminal-server", "Gnome-terminal"
 
-assign [class="Navigator"] $ws1
-assign [class="Nautilus"] $ws5
+assign [class="Firefox"] $ws1
 
+for_window [title=".*SQLyog.*"] move to workspace $ws3, workspace $ws3, focus
 
-for_window [class="vlc"] move workspace $ws8
-for_window [class="vlc"] floating enable
-
-for_window [class="Spotify"] move workspace $ws7
+for_window [class="Nautilus"]  move container to workspace $ws5, workspace $ws5, focus
+for_window [class="Evince"] move container to workspace $ws5, workspace $ws5, focus
 
 for_window [class="Gimp"] move workspace $ws6
 
+for_window [class="Spotify"] move workspace $ws7
+for_window [class="Remmina"] floating enable, move container to workspace $ws7, workspace $ws7, focus
+
+assign [title="gmusicbrowser"] floating disable
+
 assign [class="Telegram"] $ws8
+for_window [class="vlc"] move workspace $ws8
+for_window [class="vlc"] floating enable
 
-assign [class="Thunderbird"] $ws9
+for_window [class="Thunderbird"] move container to workspace $ws9, workspace $ws9, focus
 for_window [window_role="Msgcompose" class="(?i)Thunderbird"] floating enable
-
-for_window [class="Remmina"] floating enable
-
-
 
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
@@ -69,10 +77,14 @@ for_window [class="(?i)pavucontrol"] floating enable, move position mouse
 for_window [class="(?i)pavucontrol" instance="pavucontrol-bar"] move down $height pxing enable
 for_window [class="Galculator"] floating enable border pixel 1
 for_window [class="Lxappearance"] floating enable sticky enable border normal
+
 for_window [title="alsamixer"] floating enable border pixel 1
-for_window [urgent=latest] focus
+
 for_window [class="Yad"] floating enable
 for_window [class="Gnome-calculator"] floating enable
+
+
+for_window [urgent=latest] focus
 ##### COLORS #############
 
 set_from_resource $darkred     color1  #000000
@@ -95,7 +107,7 @@ set $darkblack   #1d2021
 set $transparent #00000000
 
 #                         BORDER     BACKGROUND   TEXT        INDICATOR    CHILD_BORDER
-client.focused            $black    $white    $darkblack      $white     $white 
+client.focused            $black    $white    $darkblack      $white     $white
 client.unfocused          $black     $black       $white      $darkblack   $darkblack
 client.focused_inactive   $black     $black       $white      $darkblack   $darkblack
 client.urgent             $darkred   $darkred     $black      $darkred     $darkred
@@ -104,55 +116,59 @@ client.background         $black
 
 ##### BAR #################
 
-bar {
-    font pango:PragmataPro 10
- #   font pango:Play 12
-    separator_symbol " │ "
-
-    #status_command i3status | /srv/repo/i3spotifystatus/pystatus.py
-    status_command i3blocks
-
-     #output primary
-    position top
-
-      colors {
-        statusline         $white
-        background         $transparent
-        separator          $transparent
-
-#                          BORDER       BACKGROUND   TEXT
-        focused_workspace  $transparent $white       $black 
-        inactive_workspace $transparent $transparent $white
-        active_workspace   $transparent $transparent $white
-        urgent_workspace   $darkred     $darkred     $transparent
-        binding_mode       $darkred     $darkred     $transparent
-}
-  }
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+#bar {
+#  #font pango:PragmataPro 12
+#  font pango:Play 11
+#  status_command i3blocks
+#
+#  #output primary
+#  position top
+#  mode dock
+#    colors {
+#      statusline         $white
+#      background         $transparent
+#      separator          $transparent
+#
+#      #                  BORDER       BACKGROUND   TEXT
+#      focused_workspace  $transparent $white       $black
+#      inactive_workspace $transparent $transparent $white
+#      active_workspace   $transparent $transparent $white
+#      urgent_workspace   $darkred     $darkred     $transparent
+#      binding_mode       $darkred     $darkred     $transparent
+#   }
+#}
 
 
 
   ###### START ##############
 
-
   exec --no-startup-id compton -f
+##  exec --no-startup-id ~/.config/i3/alternating_layouts.py
   exec --no-startup-id nm-applet
-  exec --no-startup-id volti
-  # Starts dunst for notifications:
-  #exec --no-startup-id dunst
 
   exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
+
   exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
+  exec_always --no-startup-id gnome-power-manager
+#  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
   exec --no-startup-id conky
-  exec --no-startup-id feh --bg-scale ~/Immagini/walls/2915360-blackout-wallpapers.jpg
-  exec --no-startup-id xautolock -time 10 -locker 'i3lock -d -c 000000'
-  #exec --no-startup-id exec xrand DVI --off 
+
+  set $bg_img ~/Immagini/walls/wallhalla-LbGzeDd7TPMN.jpg
+  exec_always --no-startup-id feh --bg-scale $bg_img
+
+
+
+######  exec --no-startup-id xautolock -time 10 -locker 'i3lock -d -c 000000'
+  #exec --no-startup-id exec xrand DVI --off
   ###### BIND ##############
 
   # kill window focused
   bindsym $mod+Shift+q kill
 
   # start a terminal
-  bindsym $mod+Return exec i3-sensible-terminal
+  bindsym $mod+Return exec xfce4-terminal
 
   # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
   bindsym $mod+Shift+r restart
@@ -166,7 +182,7 @@ bar {
 
   # rofi bindings
   #bindsym F10 exec rofi -modi drun -show drun -lines 10 -eh 3 -width 100 -padding 700 " -bw 0 -opacity "50 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
-  bindsym F10 exec rofi -show run   -lines 3 -eh 2 -width 100 -padding 800 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+  bindsym F10 exec rofi -show run   -lines 3 -eh 2 -width 100 -padding 300 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
 
   # F12 used by firefox dev tools
   bindsym F8 exec rofi -show window -lines 10 -eh 2 -width 700 -padding 30 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
@@ -184,7 +200,7 @@ bar {
   #bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-high
   #bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-low
 
-  set $volume --no-startup-id osd_cat -b percentage -P $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -T Volume: -d 1 -c green -p bottom -i 100 -o 30 -O 1 -u '#000000'  
+  set $volume --no-startup-id osd_cat -b percentage -P $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -T Volume: -d 1 -c green -p middle -i 100 -o 30 -O 1 -u '#000000' -f -*-*-bold-*-*-*-36-120-*-*-*-*-*-*
 
   bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%; exec killall osd_cat; exec $volume
   bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%; exec killall osd_cat; exec $volume
@@ -194,7 +210,6 @@ bar {
   # screenshot
   bindsym --release Print exec --no-startup-id "maim -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
   bindsym --release Shift+Print exec --no-startup-id "maim -s -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
-
 
   # change focus
   bindsym $mod+Left focus left
@@ -208,8 +223,7 @@ bar {
   bindsym $mod+Shift+Up move up
   bindsym $mod+Shift+Right move right
 
-
-  # split orientation
+   # split orientation
   bindsym $mod+h split h;exec notify-send 'tile horizontally'
   bindsym $mod+v split v;exec notify-send 'tile vertically'
   # enter fullscreen mode for the focused container
@@ -218,7 +232,6 @@ bar {
   # navigate workspaces next / previous
   bindsym $mod+Ctrl+Right workspace next
   bindsym $mod+Ctrl+Left workspace prev
-
 
   # change container layout (stacked, tabbed, toggle split)
   bindsym $mod+s layout stacking
@@ -233,7 +246,8 @@ bar {
 
   # focus the parent container
   bindsym $mod+a focus parent
-  # switch to workspace
+
+   # switch to workspace
   bindsym $mod+1 workspace $ws1
   bindsym $mod+2 workspace $ws2
   bindsym $mod+3 workspace $ws3
@@ -256,16 +270,11 @@ bar {
   bindsym $mod+Shift+8 move container to workspace $ws8
   bindsym $mod+Shift+9 move container to workspace $ws9
   bindsym $mod+Shift+0 move container to workspace $ws10
-  bindsym $mod+Tab workspace back_and_forth
+#  bindsym $mod+Tab workspace back_and_forth
 
   ##### MODE #####################
 
   mode "resize" {
-  # These bindings trigger as soon as you enter the resize mode
-  bindsym j resize shrink width 10 px or 10 ppt
-  bindsym k resize grow height 10 px or 10 ppt
-  bindsym l resize shrink height 10 px or 10 ppt
-  bindsym ograve resize grow width 10 px or 10 ppt
 
   # same bindings, but for the arrow keys
   bindsym Left resize shrink width 10 px or 10 ppt
@@ -283,7 +292,7 @@ bar {
 bindsym $mod+o mode "$mode_launcher"
 
 mode "$mode_launcher" {
-# a == audio 
+# a == audio
 
 bindsym a	exec $term -e pulsemixer; mode "default"
 # c == chrome
@@ -296,10 +305,12 @@ bindsym i exec $term -e htop; mode "default"
 bindsym m exec gnome-calculator; mode "default"
 # n == nautilus
 bindsym n exec nautilus ; mode "default"
-# o == office 
+# o == office
 bindsym o exec libreoffice; mode "default"
 # p == phpstorm
 bindsym p exec ~/bin/PhpStorm-173.4674.45/bin/phpstorm.sh; mode "default"
+# r == ranger
+bindsym r exec xfce4-terminal -e ranger; mode "default"
 # s == sql
 bindsym s exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe; mode "default"
 # t == thunderbird

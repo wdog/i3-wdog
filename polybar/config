@@ -1,0 +1,289 @@
+#
+[colors]
+fg = #FFFFFF
+bg = #333333
+dark = #000000
+
+
+border_wlan = #ff9900
+border_eth  = #FFAC00
+border_mem  = #0082C0
+border_cpu  = #3DBBF7
+border_vol  = #31FF00
+border_batt = #31FF00
+border_time = #31FF00
+
+fgdis                          = #696969
+bgi3                           = #ABCAA3
+bgi3f                          = #73C15F
+alert                          = #fF7533
+tp                             = #00000000
+
+[bar/top]
+monitor                        = DP-1
+monitor-fallback               = LVDS-1-1
+width                          = 100%
+height                         = 30
+
+background                     = ${colors.tp}
+foreground                     = ${colors.fg}
+
+bottom                         = false
+
+border-top-color               = ${colors.tp}
+border-left-color              = ${colors.tp}
+border-right-color             = ${colors.tp}
+border-top-size                = 5
+border-left-size               = 10
+border-right-size              = 15
+
+module-margin-left             = 0
+module-margin-right            = 0
+padding-left                   = 0
+padding-right                  = 0
+
+line-size = 3
+
+font-0                         = Roboto:pixelsize=10;1
+font-1                         = RobotoMono Nerd Font:pixelsize=10;1
+font-2                         = Font Awesome 5 Free:pixelsize=10;1
+
+modules-left                   = i3 volume eth wlan cpu memory
+modules-right                  = time battery
+modules-center                 = gmusicbrowser spotify ranger thunar
+
+wm-restack                     = i3
+
+tray-position                  = right
+tray-background                = ${colors.bg}
+tray-padding = 2
+cursor-click = pointer
+
+[module/eth]
+type = internal/network
+interface = eno1
+interval = 3.0
+format-connected-background    = ${colors.bg}
+format-connected-prefix = " ﴿ "
+label-connected = %local_ip%
+format-connected-underline = ${colors.border_eth}
+
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+
+[module/time]
+type                           = internal/date
+interval                       = 1
+time                           = " %H:%M:%S "
+format-prefix                  = "  "
+format-background              = ${colors.bg}
+format-underline               = ${colors.border_time}
+label                          = %time%
+format-margin                  = 1
+
+[module/volume]
+type                     = internal/pulseaudio
+use-ui-max               = true
+format-volume            = <ramp-volume> <label-volume> <bar-volume>
+format-muted             = <label-muted>
+
+bar-volume-width = 10
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = 
+bar-volume-fill = ""
+bar-volume-fill-font = 2
+bar-volume-empty = ""
+
+219
+
+
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.bg}
+
+ramp-volume-0            = "  "
+ramp-volume-1            = "  "
+ramp-volume-2            = "  "
+
+label-volume             = "%percentage%% "
+label-muted              = "  ﱝ %percentage%% "
+label-muted-foreground   = ${colors.fgdis}
+format-padding = 30
+
+format-volume-background = ${colors.bg}
+format-muted-background  = ${colors.bg}
+format-volume-underline  = ${colors.border_vol}
+format-muted-underline   = ${colors.border_vol}
+
+
+[module/battery]
+type                          = internal/battery
+battery                       = BAT0
+adapter                       = ADP0
+full-at                       = 99
+
+format-full                   = <label-full>
+format-charging               = <animation-charging> <label-charging>
+format-discharging            = <ramp-capacity> <label-discharging>
+
+ramp-capacity-0               = " "
+ramp-capacity-1               = " "
+ramp-capacity-2               = " "
+ramp-capacity-3               = " "
+ramp-capacity-4               = " "
+
+animation-charging-0          = "  "
+animation-charging-1          = "  "
+animation-charging-2          = "  "
+animation-charging-3          = "  "
+animation-charging-4          = "  "
+animation-charging-framerate  = 750
+
+label-full                    = " ﮣ  %percentage%% "
+label-charging                = "%percentage%% "
+label-discharging             = "%percentage%% "
+
+format-charging-background    = ${colors.bg}
+format-discharging-background = ${colors.bg}
+format-full-background        = ${colors.bg}
+format-margin                 = 10
+format-charging-underline     = ${colors.border_batt}
+format-discharging-underline  = ${colors.border_batt}
+format-full-underline         = ${colors.border_batt}
+
+
+[module/wlan]
+type                           = internal/network
+interface                      = wlp3s0
+interval                       = 3.0
+
+format-connected               = <label-connected>
+format-disconnected            = <label-disconnected>
+
+label-connected                = "     %local_ip% "
+label-disconnected             = "      "
+label-disconnected-foreground  = #990000
+
+format-connected-background    = ${colors.bg}
+format-disconnected-background = ${colors.bg}
+format-disconnected-underline  = ${colors.border_wlan}
+format-connected-underline     = ${colors.border_wlan}
+
+
+[module/cpu]
+type              = internal/cpu
+interval          = 2
+label             = CPU %percentage%%
+format-prefix     = "  "
+format-padding    = 4
+format-underline  = ${colors.border_cpu}
+format-background = ${colors.bg}
+
+[module/memory]
+type              = internal/memory
+format            = <label>
+interval          = 2
+format-foreground = ${colors.fg}
+format-underline  = ${colors.border_mem}
+format-background = ${colors.bg}
+format-prefix     = "  "
+label             = RAM %gb_used%
+format-padding    = 4
+
+[module/i3]
+type                           = internal/i3
+format                         = <label-state> <label-mode>
+pin-workspaces                 = true
+
+ws-icon-0                      = 1;
+ws-icon-1                      = 2;
+ws-icon-2                      = 3;
+ws-icon-3                      = 4;
+ws-icon-4                      = 5;
+ws-icon-5                      = 6;
+ws-icon-6                      = 7;
+ws-icon-7                      = 8;
+ws-icon-8                      = 9;
+ws-icon-9                      = 10;
+
+ws-icon-default                = ♟
+
+label-mode-padding             = 6
+label-mode-foreground          = ${colors.fg}
+label-mode-background          = ${colors.bg}
+
+label-focused                  = %index% %icon%
+label-focused-background       = ${colors.bgi3f}
+label-focused-foreground       = ${colors.dark}
+label-focused-padding          = 4
+
+label-unfocused                = %index% %icon%
+label-unfocused-background     = ${colors.bg}
+label-unfocused-padding        = 4
+
+label-urgent                   = %index% %icon%
+label-urgent-background        = ${colors.alert}
+label-urgent-padding           = 4
+
+format-margin                  = 1
+format-underline = ${colors.bgi3f}
+
+
+[module/ranger]
+type = custom/text
+content = "  "
+click-left = xfce4-terminal -e "ranger $HOME "
+content-underline = ${colors.border_cpu}
+content-background = ${colors.bg}
+content-foreground = ${colors.border_cpu}
+content-padding = 2
+content-margin= 2
+
+[module/thunar]
+type               = custom/text
+content            = "  "
+click-left         = thunar ~
+content-underline  = ${colors.border_cpu}
+content-foreground = ${colors.border_cpu}
+content-background = ${colors.bg}
+content-padding    = 2
+
+[module/spotify]
+type                     = custom/script
+interval                 = 1
+format-prefix            = " 阮"
+format-prefix-foreground = ${colors.border_cpu}
+format-prefix-background = ${colors.bg}
+format-prefix-underline  = ${colors.border_cpu}
+format                   = <label>
+exec                     = python ~/.config/polybar/spotify_status.py -t 255 -f '{play_pause} {artist}: {song}' -p '[  ],[  ]'
+click-left               = python ~/.config/polybar/spotify_status.py -s1 
+label-foreground         = ${colors.border_cpu}
+label-background         = ${colors.bg}
+label-underline          = ${colors.border_cpu}
+label-padding            = 5
+
+[module/gmusicbrowser]
+type                     = custom/script
+interval                 = 1
+format-prefix            = "  "
+format-prefix-foreground = ${colors.border_cpu}
+format-prefix-background = ${colors.bg}
+format-prefix-underline  = ${colors.border_cpu}
+exec                     = python3 ~/.config/polybar/gmusicbrowser_status.py
+click-left               = python3 ~/.config/polybar/gmusicbrowser_status.py -s1
+label-foreground         = ${colors.border_cpu}
+label-background         = ${colors.bg}
+label-underline          = ${colors.border_cpu}
+label-padding            = 5
+
+# ; vim:ft=dosini
