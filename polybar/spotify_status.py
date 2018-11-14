@@ -95,6 +95,7 @@ try:
     print(output.format(artist=artist, song=song, play_pause=play_pause))
 
 except dbus.DBusException as e:
-    print(e)
+    exit
+#    print(e)
 
 

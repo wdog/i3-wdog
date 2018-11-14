@@ -12,6 +12,8 @@ border_cpu  = #3DBBF7
 border_vol  = #31FF00
 border_batt = #31FF00
 border_time = #31FF00
+border_audio= #00ff00
+border_fm = #FF3F2A
 
 fgdis                          = #696969
 bgi3                           = #ABCAA3
@@ -50,7 +52,7 @@ font-2                         = Font Awesome 5 Free:pixelsize=10;1
 
 modules-left                   = i3 volume eth wlan cpu memory
 modules-right                  = time battery
-modules-center                 = gmusicbrowser spotify ranger thunar
+modules-center                 = gmusicbrowser spotify ranger nautilus
 
 wm-restack                     = i3
 
@@ -91,20 +93,18 @@ format-volume            = <ramp-volume> <label-volume> <bar-volume>
 format-muted             = <label-muted>
 
 bar-volume-width = 10
-bar-volume-foreground-0 = #55aa55
-bar-volume-foreground-1 = #55aa55
-bar-volume-foreground-2 = #55aa55
-bar-volume-foreground-3 = #55aa55
-bar-volume-foreground-4 = #55aa55
-bar-volume-foreground-5 = #f5a70a
-bar-volume-foreground-6 = #ff5555
-bar-volume-gradient = false
+bar-volume-foreground-0 = #97ff86
+bar-volume-foreground-1 = #a3da32
+bar-volume-foreground-2 = #a3da32
+bar-volume-foreground-3 = #c8b000
+bar-volume-foreground-4 = #e17f00
+bar-volume-foreground-5 = #eb4112
+bar-volume-foreground-6 = #Fb4112
+bar-volume-gradient =true 
 bar-volume-indicator = 
-bar-volume-fill = ""
+bar-volume-fill = "響"
 bar-volume-fill-font = 2
-bar-volume-empty = ""
-
-219
+bar-volume-empty = "響"
 
 
 bar-volume-empty-font = 2
@@ -145,7 +145,7 @@ animation-charging-0          = "  "
 animation-charging-1          = "  "
 animation-charging-2          = "  "
 animation-charging-3          = "  "
-animation-charging-4          = "  "
+animation-charging-4     u     = "  "
 animation-charging-framerate  = 750
 
 label-full                    = " ﮣ  %percentage%% "
@@ -242,9 +242,9 @@ format-underline = ${colors.bgi3f}
 type = custom/text
 content = "  "
 click-left = xfce4-terminal -e "ranger $HOME "
-content-underline = ${colors.border_cpu}
+content-underline = ${colors.border_fm}
 content-background = ${colors.bg}
-content-foreground = ${colors.border_cpu}
+content-foreground = ${colors.border_fm}
 content-padding = 2
 content-margin= 2
 
@@ -252,8 +252,17 @@ content-margin= 2
 type               = custom/text
 content            = "  "
 click-left         = thunar ~
-content-underline  = ${colors.border_cpu}
-content-foreground = ${colors.border_cpu}
+content-underline  = ${colors.border_fm}
+content-foreground = ${colors.border_fm}
+content-background = ${colors.bg}
+content-padding    = 2
+
+[module/nautilus]
+type               = custom/text
+content            = " פּ "
+click-left         = nautilus ~
+content-underline  = ${colors.border_fm}
+content-foreground = ${colors.border_fm}
 content-background = ${colors.bg}
 content-padding    = 2
 
@@ -261,29 +270,29 @@ content-padding    = 2
 type                     = custom/script
 interval                 = 1
 format-prefix            = " 阮"
-format-prefix-foreground = ${colors.border_cpu}
+format-prefix-foreground = ${colors.border_audio}
 format-prefix-background = ${colors.bg}
-format-prefix-underline  = ${colors.border_cpu}
+format-prefix-underline  = ${colors.border_audio}
 format                   = <label>
 exec                     = python ~/.config/polybar/spotify_status.py -t 255 -f '{play_pause} {artist}: {song}' -p '[  ],[  ]'
 click-left               = python ~/.config/polybar/spotify_status.py -s1 
-label-foreground         = ${colors.border_cpu}
+label-foreground         = ${colors.border_audio}
 label-background         = ${colors.bg}
-label-underline          = ${colors.border_cpu}
+label-underline          = ${colors.border_audio}
 label-padding            = 5
 
 [module/gmusicbrowser]
 type                     = custom/script
 interval                 = 1
 format-prefix            = "  "
-format-prefix-foreground = ${colors.border_cpu}
+format-prefix-foreground = ${colors.border_audio}
 format-prefix-background = ${colors.bg}
-format-prefix-underline  = ${colors.border_cpu}
+format-prefix-underline  = ${colors.border_audio}
 exec                     = python3 ~/.config/polybar/gmusicbrowser_status.py
-click-left               = python3 ~/.config/polybar/gmusicbrowser_status.py -s1
-label-foreground         = ${colors.border_cpu}
+click-left               = python3 ~/.config/polybar/gmusicbrowser_status.py -t1
+label-foreground         = ${colors.border_audio}
 label-background         = ${colors.bg}
-label-underline          = ${colors.border_cpu}
+label-underline          = ${colors.border_audio}
 label-padding            = 5
 
 # ; vim:ft=dosini
