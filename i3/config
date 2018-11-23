@@ -8,8 +8,8 @@ set $term --no-startup-id   xfce4-terminal
 for_window [class="^.*"] border pixel 1
 set $height 34
 
-gaps inner 10
-gaps outer 5
+gaps inner 7
+gaps outer 7
 font pango:Play 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -44,30 +44,14 @@ focus_on_window_activation urgent
 floating_minimum_size 150x100
 # set popups during fullscreen mode
 popup_during_fullscreen smart
-
 # switching window with win+tab
 bindsym $mod+Tab exec --no-startup-id rofi -show window
 # use xprop -> WM_CLASS(STRING) = "gnome-terminal-server", "Gnome-terminal"
 
-assign [class="Firefox"] $ws1
+for_window [class="Remmina"] floating enable
+for_window [title="gmusicbrowser"] floating disable
+for_window [title="wine"] floating disable
 
-for_window [title=".*SQLyog.*"] move to workspace $ws3, workspace $ws3, focus
-
-for_window [class="Nautilus"]  move container to workspace $ws5, workspace $ws5, focus
-for_window [class="Evince"] move container to workspace $ws5, workspace $ws5, focus
-
-for_window [class="Gimp"] move workspace $ws6
-
-for_window [class="Spotify"] move workspace $ws7
-for_window [class="Remmina"] floating enable, move container to workspace $ws7, workspace $ws7, focus
-
-assign [title="gmusicbrowser"] floating disable
-
-assign [class="Telegram"] $ws8
-for_window [class="vlc"] move workspace $ws8
-for_window [class="vlc"] floating enable
-
-for_window [class="Thunderbird"] move container to workspace $ws9, workspace $ws9, focus
 for_window [window_role="Msgcompose" class="(?i)Thunderbird"] floating enable
 
 for_window [window_type="dialog"] floating enable
@@ -77,12 +61,9 @@ for_window [class="(?i)pavucontrol"] floating enable, move position mouse
 for_window [class="(?i)pavucontrol" instance="pavucontrol-bar"] move down $height pxing enable
 for_window [class="Galculator"] floating enable border pixel 1
 for_window [class="Lxappearance"] floating enable sticky enable border normal
-
 for_window [title="alsamixer"] floating enable border pixel 1
-
 for_window [class="Yad"] floating enable
 for_window [class="Gnome-calculator"] floating enable
-
 
 for_window [urgent=latest] focus
 ##### COLORS #############
@@ -107,7 +88,7 @@ set $darkblack   #1d2021
 set $transparent #00000000
 
 #                         BORDER     BACKGROUND   TEXT        INDICATOR    CHILD_BORDER
-client.focused            $black    $white    $darkblack      $white     $white
+client.focused            $black     $white        $darkblack      $white  #FF9900
 client.unfocused          $black     $black       $white      $darkblack   $darkblack
 client.focused_inactive   $black     $black       $white      $darkblack   $darkblack
 client.urgent             $darkred   $darkred     $black      $darkred     $darkred
@@ -155,7 +136,7 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
   exec --no-startup-id conky
 
-  set $bg_img ~/Immagini/walls/wallhalla-LbGzeDd7TPMN.jpg
+  set $bg_img ~/Pictures/wallhaven-668356.jpg
   exec_always --no-startup-id feh --bg-scale $bg_img
 
 
@@ -177,9 +158,10 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
   bindsym $mod+Shift+c reload
 
   # dmenu
-  bindsym $mod+d			exec --no-startup-id dmenu_run
+  bindsym $mod+d			exec --no-startup-id dmenu_run -l 5 -nb black -nf white -sb yellow -sf black
   bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
-
+  bindsym $mod+Ctrl+d		  gaps inner current set 7; gaps outer current set 7
+  bindsym $mod+Shift+s sticky toggle
   # rofi bindings
   #bindsym F10 exec rofi -modi drun -show drun -lines 10 -eh 3 -width 100 -padding 700 " -bw 0 -opacity "50 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
   bindsym F10 exec rofi -show run   -lines 3 -eh 2 -width 100 -padding 300 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
@@ -200,7 +182,7 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
   #bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-high
   #bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-low
 
-  set $volume --no-startup-id osd_cat -b percentage -P $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -T Volume: -d 1 -c green -p middle -i 100 -o 30 -O 1 -u '#000000' -f -*-*-bold-*-*-*-36-120-*-*-*-*-*-*
+  set $volume --no-startup-id osd_cat -b percentage -P $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -T Volume: -d 1 -c green -p middle -O 1 -u '#000000' -f -*-*-bold-*-*-*-36-120-*-*-*-*-*-*
 
   bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%; exec killall osd_cat; exec $volume
   bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%; exec killall osd_cat; exec $volume

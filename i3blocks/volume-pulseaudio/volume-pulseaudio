@@ -30,9 +30,11 @@ if [[ -z "$SCONTROL" ]] ; then
 fi
 
 
+
 CAPABILITY=$(amixer -D $MIXER get $SCONTROL | sed -n "s/  Capabilities:.*cvolume.*/Capture/p")
 
 case $BLOCK_BUTTON in
+    1) pactl set-sink-volume 0 -5%;;
     2) amixer -q -D $MIXER sset $SCONTROL $CAPABILITY toggle ;;
-
+    3) pactl set-sink-volume 0 +5%;;
 esac
