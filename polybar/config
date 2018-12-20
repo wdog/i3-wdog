@@ -17,10 +17,12 @@ border_fm    = #FFFBA2
 border_window= #FFFFFF
 
 fgdis        = #696969
-bgi3         = #ABCAA3
-bgi3f        = #73C15F
+bgi3f        = #73C100
 alert        = #fF7533
 tp           = #00000000
+
+down_speed = #ff9900
+up_speed   = #A6E22E
 
 [settings]
 screenchange-reload = true
@@ -50,21 +52,25 @@ padding-right       = 0
 
 line-size           = 1
 
-font-0              = play:pixelsize=10;1
+font-0              = Play:pixelsize=9;1
 font-1              = RobotoMono Nerd Font:pixelsize=10;1
 font-2              = Font Awesome 5 Free:pixelsize=10;1
 
-modules-left        = i3 volume eth wlan cpu memory
-modules-right       = time battery
-modules-center      = tiddly thunar player-mpris-tail xwindow
+modules-left        = i3 volume eth wlan up_eno1 up_wlp3s0 down_eno1 down_wlp3s0 cpu memory
+modules-right       = xwindow time battery
+modules-center      = tiddly thunar player-mpris-tail 
 
 wm-restack          = i3
 #override-redirect   = true
 
 
-tray-position                  = right
-tray-background                = ${colors.bg}
-tray-padding = 2
+tray-position   = right
+tray-background = ${colors.bg}
+tray-padding    = 5
+tray-detached   = false
+tray-maxsize    = 32
+
+enable-ipc      = false
 cursor-click = pointer
 
 [module/eth]
@@ -81,6 +87,71 @@ format-connected-underline = ${colors.border_eth}
 ;label-disconnected = %ifname% disconnected
 ;label-disconnected-foreground = ${colors.foreground-alt}
 
+[module/wlan]
+type                           = internal/network
+interface                      = wlp3s0
+interval                       = 10
+
+format-connected               = <label-connected>
+format-disconnected            = <label-disconnected>
+
+label-connected                = "     %local_ip% [ %essid% ] "
+label-disconnected             = "      "
+label-disconnected-foreground  = #990000
+
+format-connected-background    = ${colors.bg}
+format-disconnected-background = ${colors.bg}
+format-disconnected-underline  = ${colors.border_wlan}
+format-connected-underline     = ${colors.border_wlan}
+
+############## SPEED ###############
+
+[module/up_eno1]
+type                               = internal/network
+interface                          = eno1
+label-connected                    = "%upspeed:7%"
+format-connected                   = <label-connected>
+format-connected-prefix            = "  "
+format-connected-prefix-foreground = ${colors.up_speed}
+format-connected-underline         = ${colors.up_speed}
+label-connected-foreground         = ${colors.up_speed}
+format-connected-padding           = 3
+
+[module/down_eno1]
+type                               = internal/network
+interface                          = eno1
+label-connected                    = "%downspeed:7%"
+format-connected                   = <label-connected>
+format-connected-prefix            = "  "
+format-connected-prefix-foreground = ${colors.down_speed}
+format-connected-underline         = ${colors.down_speed}
+label-connected-foreground         = ${colors.down_speed}
+format-connected-padding           = 3
+
+[module/up_wlp3s0]
+type                               = internal/network
+interface                          = wlp3s0
+label-connected                    = "%upspeed:7%"
+format-connected                   = <label-connected>
+format-connected-prefix            = "  "
+format-connected-prefix-foreground = ${colors.up_speed}
+format-connected-underline         = ${colors.up_speed}
+label-connected-foreground         = ${colors.up_speed}
+format-connected-padding           = 3
+
+
+[module/down_wlp3s0]
+type                               = internal/network
+interface                          = wlp3s0 
+label-connected                    = "%downspeed:7%"
+format-connected                   = <label-connected>
+format-connected-prefix            = "  "
+format-connected-prefix-foreground = ${colors.down_speed}
+format-connected-underline         = ${colors.down_speed}
+label-connected-foreground         = ${colors.down_speed}
+format-connected-padding           = 3
+
+############## SPEED ###############
 
 [module/time]
 type              = internal/date
@@ -168,30 +239,12 @@ format-discharging-underline  = ${colors.border_batt}
 format-full-underline         = ${colors.border_batt}
 
 
-[module/wlan]
-type                           = internal/network
-interface                      = wlp3s0
-interval                       = 10
-
-format-connected               = <label-connected>
-format-disconnected            = <label-disconnected>
-
-label-connected                = "     %local_ip% "
-label-disconnected             = "      "
-label-disconnected-foreground  = #990000
-
-format-connected-background    = ${colors.bg}
-format-disconnected-background = ${colors.bg}
-format-disconnected-underline  = ${colors.border_wlan}
-format-connected-underline     = ${colors.border_wlan}
-
 
 [module/cpu]
+type = internal/cpu
 
 format-label = internal/cpu
-
 format = <label>
-
 ramp-coreload-0 = ▁
 ramp-coreload-1 = ▂
 ramp-coreload-2 = ▃
@@ -201,8 +254,6 @@ ramp-coreload-5 = ▆
 ramp-coreload-6 = ▇
 ramp-coreload-7 = █
 ramp-coreload-underline = ${colors.fg}
-
-type = internal/cpu
 interval = 2
 label = " %percentage%%"
 
@@ -299,14 +350,14 @@ content-padding    = 2
 
 [module/player-mpris-tail]
 type             = custom/script
-exec             = ~/.config/polybar/player-mpris-tail.py -f '{icon} {artist} - {track} - {title}'
+exec             = ~/.config/polybar/player-mpris-tail.py -f '{icon} {track}) {title} - [ {artist} ]'
 tail             = true
 label            = %output%
 click-left       = ~/.config/polybar/player-mpris-tail.py previous
 click-right      = ~/.config/polybar/player-mpris-tail.py next
 click-middle     = ~/.config/polybar/player-mpris-tail.py play-pause
-label-foreground = ${colors.border_audio}
-label-background = ${colors.bg}
+label-foreground = #000
+label-background = #f90
 label-underline  = ${colors.border_audio}
 label-padding    = 5
 
@@ -315,7 +366,6 @@ type             = internal/xwindow
 label            = %title:0:50:...%
 label-background = ${colors.bg}
 label-underline  = ${colors.border_window}
-label-padding    = 20
-label-margin     = 10
+label-padding    = 5
 
 # ; vim:ft=dosini

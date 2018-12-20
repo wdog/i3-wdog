@@ -49,10 +49,14 @@ bindsym $mod+Tab exec --no-startup-id rofi -show window
 # use xprop -> WM_CLASS(STRING) = "gnome-terminal-server", "Gnome-terminal"
 
 for_window [class="Remmina"] floating enable
-for_window [title="gmusicbrowser"] floating disable
+for_window [class="(?i)Gmusicbrowser"] floating disable
 for_window [title="wine"] floating disable
 
 for_window [window_role="Msgcompose" class="(?i)Thunderbird"] floating enable
+assign [class="(?i)Firefox"] 1
+assign [class="(?i)Thunderbird"] 10
+assign [class="(?i)Gmusicbriowser"] 8
+assign [class="(?i)Remmina"] 6
 
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
@@ -162,6 +166,8 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
   bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
   bindsym $mod+Ctrl+d		  gaps inner current set 7; gaps outer current set 7
   bindsym $mod+Shift+s sticky toggle
+
+  bindsym $mod+q exec ~/.config/i3/launcher_app.sh
   # rofi bindings
   #bindsym F10 exec rofi -modi drun -show drun -lines 10 -eh 3 -width 100 -padding 700 " -bw 0 -opacity "50 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
   bindsym F10 exec rofi -show run   -lines 3 -eh 2 -width 100 -padding 300 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
@@ -184,10 +190,19 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
   set $volume --no-startup-id osd_cat -b percentage -P $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -T Volume: -d 1 -c green -p middle -O 1 -u '#000000' -f -*-*-bold-*-*-*-36-120-*-*-*-*-*-*
 
-  bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%; exec killall osd_cat; exec $volume
-  bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%; exec killall osd_cat; exec $volume
-  bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle; exec notify-send "Mute: " -i notification-audio-volume-muted
+  bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%; exec killall osd_cat; exec $volume
+  bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%; exec killall osd_cat; exec $volume
+  bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle; exec notify-send "Mute: " -i notification-audio-volume-muted
 
+  # Media player controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+#monitor laptop ->
+bindsym $mod+Ctrl+v exec xrandr --output LVDS-1-1 --primary --mode 1600x900 --pos 0x0 --rotate normal --output LVDS-0 --off --output VGA-1-1 --off --output HDMI-0 --off --output DP-3 --off --output DP-2 --off --output DP-1 --off --output DP-0 --off
+# monitor esterno <-
+bindsym $mod+Shift+v exec xrandr --output LVDS-1-1 --off --output LVDS-0 --off --output VGA-1-1 --off --output HDMI-0 --off --output DP-3 --off --output DP-2 --off --output DP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-0 --off
 
   # screenshot
   bindsym --release Print exec --no-startup-id "maim -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
