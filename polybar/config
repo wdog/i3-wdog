@@ -1,7 +1,7 @@
 #
 [colors]
 fg           = #FFFFFF
-bg           = #00333333
+bg           = #cc333333
 dark         = #000000
 
 
@@ -27,66 +27,16 @@ up_speed   = #A6E22E
 [settings]
 screenchange-reload = true
 
-[bar/top]
-monitor             = DP-1
-monitor-fallback    = LVDS-1-1
-width               = 100%
-height              = 24
-
-background          = ${colors.tp}
-foreground          = ${colors.fg}
-
-bottom              = false
-
-border-top-color    = ${colors.tp}
-border-left-color   = ${colors.tp}
-border-right-color  = ${colors.tp}
-border-top-size     = 5
-border-left-size    = 15
-border-right-size   = 15
-
-module-margin-left  = 0
-module-margin-right = 0
-padding-left        = 0
-padding-right       = 0
-
-line-size           = 1
-
-font-0              = Play:pixelsize=9;1
-font-1              = RobotoMono Nerd Font:pixelsize=10;1
-font-2              = Font Awesome 5 Free:pixelsize=10;1
-
-modules-left        = i3 volume eth wlan up_eno1 up_wlp3s0 down_eno1 down_wlp3s0 cpu memory
-modules-right       = xwindow time battery
-modules-center      = tiddly thunar player-mpris-tail 
-
-wm-restack          = i3
-#override-redirect   = true
-
-
-tray-position   = right
-tray-background = ${colors.bg}
-tray-padding    = 5
-tray-detached   = false
-tray-maxsize    = 32
-
-enable-ipc      = false
-cursor-click = pointer
-
+############## ETH ###############
 [module/eth]
 type = internal/network
-interface = eno1
-interval = 10
-format-connected-background    = ${colors.bg}
-format-connected-prefix = " ﴿ "
-label-connected = %local_ip%
-format-connected-underline = ${colors.border_eth}
+interface = enp0s25
+interval = 0.5
+label-connected = %{T4} [%ifname%]  %{F#090}%local_ip% %{F#ff0}%{F#f90}%upspeed% %{F#0f0}%downspeed% %{T-}
+udspeed-minwidth = 5
 
-;format-disconnected = <label-disconnected>
-;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = %ifname% disconnected
-;label-disconnected-foreground = ${colors.foreground-alt}
 
+############## WLAN ###############
 [module/wlan]
 type                           = internal/network
 interface                      = wlp3s0
@@ -95,8 +45,8 @@ interval                       = 10
 format-connected               = <label-connected>
 format-disconnected            = <label-disconnected>
 
-label-connected                = "     %local_ip% [ %essid% ] "
-label-disconnected             = "      "
+label-connected = %{T4}[%ifname%]    %essid% %{F#090}%local_ip% %{F#f90}%upspeed% %{F#0f0}%downspeed%%{T-}
+udspeed-minwidth = 5
 label-disconnected-foreground  = #990000
 
 format-connected-background    = ${colors.bg}
@@ -104,70 +54,61 @@ format-disconnected-background = ${colors.bg}
 format-disconnected-underline  = ${colors.border_wlan}
 format-connected-underline     = ${colors.border_wlan}
 
-############## SPEED ###############
 
-[module/up_eno1]
-type                               = internal/network
-interface                          = eno1
-label-connected                    = "%upspeed:7%"
-format-connected                   = <label-connected>
-format-connected-prefix            = "  "
-format-connected-prefix-foreground = ${colors.up_speed}
-format-connected-underline         = ${colors.up_speed}
-label-connected-foreground         = ${colors.up_speed}
-format-connected-padding           = 3
+############## CPU MEM ###############
+[module/cpu]
+type = internal/cpu
+interval = 1
 
-[module/down_eno1]
-type                               = internal/network
-interface                          = eno1
-label-connected                    = "%downspeed:7%"
-format-connected                   = <label-connected>
-format-connected-prefix            = "  "
-format-connected-prefix-foreground = ${colors.down_speed}
-format-connected-underline         = ${colors.down_speed}
-label-connected-foreground         = ${colors.down_speed}
-format-connected-padding           = 3
+format = <label> <ramp-coreload>
+format-padding=10
+label = CPU
+ramp-coreload-0 = ▁
+ramp-coreload-0-font = 4
+ramp-coreload-0-foreground = #ffffff
+ramp-coreload-1 = ▂
+ramp-coreload-1-font = 4
+ramp-coreload-1-foreground = #ffff88
+ramp-coreload-2 = ▃
+ramp-coreload-2-font = 4
+ramp-coreload-2-foreground = #ff9900
+ramp-coreload-3 = ▄
+ramp-coreload-3-font = 4
+ramp-coreload-3-foreground = #FF0000
 
-[module/up_wlp3s0]
-type                               = internal/network
-interface                          = wlp3s0
-label-connected                    = "%upspeed:7%"
-format-connected                   = <label-connected>
-format-connected-prefix            = "  "
-format-connected-prefix-foreground = ${colors.up_speed}
-format-connected-underline         = ${colors.up_speed}
-label-connected-foreground         = ${colors.up_speed}
-format-connected-padding           = 3
+[module/memory]
+type = internal/memory
+format = <label> 
+format-padding=10
+label = RAM %gb_used% 
+;label-foreground = #0088CC
 
 
-[module/down_wlp3s0]
-type                               = internal/network
-interface                          = wlp3s0 
-label-connected                    = "%downspeed:7%"
-format-connected                   = <label-connected>
-format-connected-prefix            = "  "
-format-connected-prefix-foreground = ${colors.down_speed}
-format-connected-underline         = ${colors.down_speed}
-label-connected-foreground         = ${colors.down_speed}
-format-connected-padding           = 3
+############## TEMPERATURE ###############
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 70
+format = <label>
+label =   %temperature-c%
+label-foreground = #FFFFFF
+label-warn =   %temperature-c%
+label-warn-foreground = #FF3300
 
 ############## SPEED ###############
 
 [module/time]
-type              = internal/date
-interval          = 10
-time              = " %H:%M - %d %B"
-format-prefix     = "  "
-format-background = ${colors.bg}
-format-underline  = ${colors.border_time}
-label             = %time%
-format-margin     = 0
-format-padding    = 2
+type = custom/script
+exec = ~/.config/polybar/scripts/popup-calendar.sh
+interval = 5
+click-left = ~/.config/polybar/scripts/popup-calendar.sh --popup
+
+############## VOLUME ###############
 
 [module/volume]
 type                     = internal/pulseaudio
 use-ui-max               = true
-format-volume            = <ramp-volume> <label-volume> <bar-volume>
+format-volume            = <label-volume> <ramp-volume> <bar-volume>
 format-muted             = <label-muted>
 
 bar-volume-width = 10
@@ -184,7 +125,6 @@ bar-volume-fill = "響"
 bar-volume-fill-font = 2
 bar-volume-empty = "響"
 
-
 bar-volume-empty-font = 2
 bar-volume-empty-foreground = ${colors.bg}
 
@@ -192,15 +132,11 @@ ramp-volume-0            = "  "
 ramp-volume-1            = "  "
 ramp-volume-2            = "  "
 
-label-volume             = "%percentage%% "
-label-muted              = "  ﱝ %percentage%% "
+label-volume             = "%{T4}%percentage:5%% %{T-}   "
+label-muted              = "%{T4}%percentage:5%% %{T-} ﱝ "
 label-muted-foreground   = ${colors.fgdis}
 format-padding = 30
 
-format-volume-background = ${colors.bg}
-format-muted-background  = ${colors.bg}
-format-volume-underline  = ${colors.border_vol}
-format-muted-underline   = ${colors.border_vol}
 
 
 [module/battery]
@@ -223,55 +159,15 @@ animation-charging-0          = "  "
 animation-charging-1          = "  "
 animation-charging-2          = "  "
 animation-charging-3          = "  "
-animation-charging-4     u     = "  "
+animation-charging-4          = "  "
 animation-charging-framerate  = 750
 
 label-full                    = " ﮣ  %percentage%% "
 label-charging                = "%percentage%% "
 label-discharging             = "%percentage%% "
 
-format-charging-background    = ${colors.bg}
-format-discharging-background = ${colors.bg}
-format-full-background        = ${colors.bg}
 format-margin                 = 10
-format-charging-underline     = ${colors.border_batt}
-format-discharging-underline  = ${colors.border_batt}
-format-full-underline         = ${colors.border_batt}
 
-
-
-[module/cpu]
-type = internal/cpu
-
-format-label = internal/cpu
-format = <label>
-ramp-coreload-0 = ▁
-ramp-coreload-1 = ▂
-ramp-coreload-2 = ▃
-ramp-coreload-3 = ▄
-ramp-coreload-4 = ▅
-ramp-coreload-5 = ▆
-ramp-coreload-6 = ▇
-ramp-coreload-7 = █
-ramp-coreload-underline = ${colors.fg}
-interval = 2
-label = " %percentage%%"
-
-
-format-padding    = 4
-format-underline  = ${colors.border_cpu}
-format-background = ${colors.bg}
-
-[module/memory]
-type              = internal/memory
-format            = <label>
-interval          = 3
-format-foreground = ${colors.fg}
-format-underline  = ${colors.border_mem}
-format-background = ${colors.bg}
-format-prefix     = "  "
-label             = RAM %gb_used%
-format-padding    = 4
 
 [module/i3]
 type                           = internal/i3
@@ -300,11 +196,11 @@ label-focused-background       = ${colors.bgi3f}
 label-focused-foreground       = ${colors.dark}
 label-focused-padding          = 4
 
-label-unfocused                = %index% %icon%
+label-unfocused                = %index%
 label-unfocused-background     = ${colors.bg}
 label-unfocused-padding        = 4
 
-label-urgent                   = %index% %icon%
+label-urgent                   = %index%
 label-urgent-background        = ${colors.alert}
 label-urgent-padding           = 4
 
@@ -312,60 +208,139 @@ format-margin                  = 1
 format-underline = ${colors.bgi3f}
 
 
-[module/ranger]
-type               = custom/text
-content            = "  "
-click-left         = xfce4-terminal -e "ranger $HOME "
-content-underline  = ${colors.border_fm}
-content-background = ${colors.bg}
-content-foreground = ${colors.border_fm}
-content-padding    = 2
+
+[module/ping_gw]
+type                     = custom/script
+format-prefix            = "  "
+exec                     = ~/bin/ping_gw.sh 192.168.88.1
+format-underline         = #00ff00
+format-prefix-foreground = #00ff00
+label-foreground         = #00ff00
+label-padding            = 3
+
+[module/ping_google]
+type                     = custom/script
+format-prefix            = "   "
+exec                     = ~/bin/ping_gw.sh 8.8.8.8
+format-underline         = #00ff00
+format-prefix-foreground = #00ff00
+label-foreground         = #00ff00
+label-padding            = 3
 
 [module/thunar]
 type               = custom/text
-content            = "  "
+content            = "   "
 click-left         = thunar ~ &
-content-underline  = ${colors.border_fm}
-content-foreground = ${colors.border_fm}
-content-background = ${colors.bg}
-content-padding    = 2
-
-[module/nautilus]
-type               = custom/text
-content            = " פּ "
-click-left         = nautilus ~ &
-content-underline  = ${colors.border_fm}
-content-foreground = ${colors.border_fm}
-content-background = ${colors.bg}
 content-padding    = 2
 
 [module/tiddly]
 type               = custom/text
-content            = " פּ "
+content            = "   "
 click-left         = ~/bin/beaker-browser.sh &
-content-underline  = ${colors.border_fm}
-content-foreground = ${colors.border_fm}
-content-background = ${colors.bg}
 content-padding    = 2
 
-[module/player-mpris-tail]
+[module/telegram]
+type       = custom/text
+click-left = ~/bin/Telegram/Telegram
+content    = "   "
+
+[module/player]
+type       = custom/text
+click-left = gmusicbrowser
+content    = "   "
+
+[module/music]
 type             = custom/script
-exec             = ~/.config/polybar/player-mpris-tail.py -f '{icon} {track}) {title} - [ {artist} ]'
+exec             = ~/.config/polybar/music-player.py -f '{icon} {track}) {title} - [ {artist} ]'
 tail             = true
 label            = %output%
-click-left       = ~/.config/polybar/player-mpris-tail.py previous
-click-right      = ~/.config/polybar/player-mpris-tail.py next
-click-middle     = ~/.config/polybar/player-mpris-tail.py play-pause
-label-foreground = #000
-label-background = #f90
-label-underline  = ${colors.border_audio}
+label-foreground= #ff0
+click-left       = ~/.config/polybar/music-player.py previous
+click-right      = ~/.config/polybar/music-player.py next
+click-middle     = ~/.config/polybar/music-player.py play-pause
 label-padding    = 5
 
-[module/xwindow]
-type             = internal/xwindow
-label            = %title:0:50:...%
-label-background = ${colors.bg}
-label-underline  = ${colors.border_window}
-label-padding    = 5
+
+[bar/top]
+width               = 100%
+height              = 24
+
+background          = ${colors.bg}
+foreground          = ${colors.fg}
+
+bottom              = false
+
+border-top-size     = 5
+border-left-size    = 15
+border-right-size   = 15
+
+module-margin-left  = 0
+module-margin-right = 0
+padding-left        = 0
+padding-right       = 0
+
+line-size           = 1
+
+font-0              = Play:pixelsize=9;1
+font-1              = RobotoMono Nerd Font:pixelsize=10;1
+font-2              = Font Awesome 5 Free:pixelsize=10;1
+font-3              = DejaVu Sans Mono:pixelsize=10;1
+font-4              = fixed:size=10;0
+
+modules-left   = i3 eth wlan
+modules-center = 
+modules-right  = time
+
+#wm-restack          = i3
+#override-redirect   = true
+
+
+tray-position   = right
+tray-background = ${colors.bg}
+tray-padding    = 5
+tray-detached   = false
+tray-maxsize    = 32
+
+enable-ipc      = false
+cursor-click = pointer
+
+[bar/bottom]
+width               = 100%
+height              = 24
+
+background          = ${colors.bg}
+foreground          = ${colors.fg}
+
+bottom              = true
+
+border-top-color    = ${colors.tp}
+border-left-color   = ${colors.tp}
+border-right-color  = ${colors.tp}
+border-top-size     = 5
+border-left-size    = 15
+border-right-size   = 15
+
+module-margin-left  = 0
+module-margin-right = 0
+padding-left        = 0
+padding-right       = 0
+
+line-size           = 1
+
+font-0              = Play:pixelsize=9;1
+font-1              = RobotoMono Nerd Font:pixelsize=10;1
+font-2              = Font Awesome 5 Free:pixelsize=10;1
+font-3              = DejaVu Sans Mono:pixelsize=10;1
+
+modules-left        = volume cpu memory temperature
+modules-center      = tiddly thunar telegram player 
+modules-right       = ping_gw ping_google battery music 
+
+#wm-restack          = i3
+#override-redirect   = false 
+
+enable-ipc      = false
+cursor-click = pointer
+
 
 # ; vim:ft=dosini

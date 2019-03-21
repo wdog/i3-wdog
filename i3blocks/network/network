@@ -1,9 +1,0 @@
-#!/bin/sh
-
-IP=$(curl -s http://ifconf.me)
-
-case $BLOCK_BUTTON in
-    3) echo "$IP" | xclip ;;
-    *) echo "$IP" ;;
-esac
-
