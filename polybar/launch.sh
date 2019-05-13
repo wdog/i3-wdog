@@ -7,6 +7,7 @@ pkill -9 polybar
 while pgrep -u $UID -x polybar > /dev/null; do sleep 1; done
 
 polybar --reload top -c ~/.config/polybar/config &
+polybar --reload bottom-c ~/.config/polybar/config &
 
 # Launch bar(s)
 # polybar dummy -q &

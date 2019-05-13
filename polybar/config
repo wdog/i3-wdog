@@ -58,7 +58,7 @@ font-2              = Font Awesome 5 Free:pixelsize=10;1
 
 modules-left        = i3 volume eth wlan up_eno1 up_wlp3s0 down_eno1 down_wlp3s0 cpu memory
 modules-right       = xwindow time battery
-modules-center      = tiddly thunar player-mpris-tail 
+modules-center      = tiddly thunar player-mpris-tail
 
 wm-restack          = i3
 #override-redirect   = true
@@ -142,7 +142,7 @@ format-connected-padding           = 3
 
 [module/down_wlp3s0]
 type                               = internal/network
-interface                          = wlp3s0 
+interface                          = wlp3s0
 label-connected                    = "%downspeed:7%"
 format-connected                   = <label-connected>
 format-connected-prefix            = "  "
@@ -178,8 +178,8 @@ bar-volume-foreground-3 = #c8b000
 bar-volume-foreground-4 = #e17f00
 bar-volume-foreground-5 = #eb4112
 bar-volume-foreground-6 = #Fb4112
-bar-volume-gradient =true 
-bar-volume-indicator = 
+bar-volume-gradient =true
+bar-volume-indicator =
 bar-volume-fill = "響"
 bar-volume-fill-font = 2
 bar-volume-empty = "響"
