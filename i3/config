@@ -1,4 +1,5 @@
 # vim: filetype=config
+# i3 config file (v4)
 
 # #---Basic Definitions---# #
 # Needed for i3-gaps
@@ -8,12 +9,14 @@ set $term --no-startup-id   xfce4-terminal
 for_window [class="^.*"] border pixel 1
 set $height 34
 
-gaps inner 7
-gaps outer 7
+gaps inner 10
+gaps outer 5
 font pango:Play 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 hide_edge_borders both
+#--
+new_float normal
 ##### WS ##############
 
 #workspace-edit
@@ -69,6 +72,10 @@ for_window [title="alsamixer"] floating enable border pixel 1
 for_window [class="Yad"] floating enable
 for_window [class="Gnome-calculator"] floating enable
 
+for_window [class="(?i)gmusibrowser"] floating disabled
+
+
+
 for_window [urgent=latest] focus
 ##### COLORS #############
 
@@ -101,7 +108,6 @@ client.background         $black
 
 ##### BAR #################
 
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 #bar {
 #  #font pango:PragmataPro 12
 #  font pango:Play 11
@@ -127,26 +133,23 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 
   ###### START ##############
-
+  exec_always --no-startup-id $HOME/.config/polybar/launch.sh
   exec --no-startup-id compton -f
 ##  exec --no-startup-id ~/.config/i3/alternating_layouts.py
   exec --no-startup-id nm-applet
 
-  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
+  exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
+  exec --no-startup-id parcellite -d
+  exec --no-startup-id xbindkeys  -d
 
-  exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
-  exec_always --no-startup-id gnome-power-manager
-#  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+#  exec --no-startup-id conky
 
-  exec --no-startup-id conky
-
-  set $bg_img ~/Pictures/wallhaven-668356.jpg
-  exec_always --no-startup-id feh --bg-scale $bg_img
+  set $bg_img ~/Pictures/wallhaven-644734.jpg
+  exec_always --no-startup-id feh --bg-fill $bg_img
 
 
 
-######  exec --no-startup-id xautolock -time 10 -locker 'i3lock -d -c 000000'
-  #exec --no-startup-id exec xrand DVI --off
+  ######  exec --no-startup-id xautolock -time 10 -locker 'i3lock -d -c 000000'
   ###### BIND ##############
 
   # kill window focused
@@ -200,10 +203,9 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 #monitor laptop ->
-bindsym $mod+Ctrl+v exec xrandr --output LVDS-1-1 --primary --mode 1600x900 --pos 0x0 --rotate normal --output LVDS-0 --off --output VGA-1-1 --off --output HDMI-0 --off --output DP-3 --off --output DP-2 --off --output DP-1 --off --output DP-0 --off
+bindsym $mod+Shift+v exec xrandr --output VGA-1 --primary --mode 1680x1050 --pos 0x0 --output LVDS-1 --off
 # monitor esterno <-
-bindsym $mod+Shift+v exec xrandr --output LVDS-1-1 --off --output LVDS-0 --off --output VGA-1-1 --off --output HDMI-0 --off --output DP-3 --off --output DP-2 --off --output DP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-0 --off
-
+bindsym $mod+Ctrl+v exec xrandr --output LVSD-1 --primary --mode 1280x800 --pos 0x0 --output VGA-1 --off
   # screenshot
   bindsym --release Print exec --no-startup-id "maim -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
   bindsym --release Shift+Print exec --no-startup-id "maim -s -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
