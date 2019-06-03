@@ -1,5 +1,4 @@
 # vim: filetype=config
-# i3 config file (v4)
 
 # #---Basic Definitions---# #
 # Needed for i3-gaps
@@ -9,24 +8,15 @@ set $term --no-startup-id   xfce4-terminal
 for_window [class="^.*"] border pixel 1
 set $height 34
 
-gaps inner 10
-gaps outer 5
+gaps inner 1
+gaps outer 1
 font pango:Play 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 hide_edge_borders both
-#--
-new_float normal
 ##### WS ##############
 
 #workspace-edit
-#set $ws1 "1 - Terminals  "
-#set $ws2 "2 - Browser 🌍"
-#set $ws3 "3 - Data  📁"
-#set $ws4 "4 - Dev 🚀"
-#set $ws5 "5 - Music 🎵 "
-#set $ws6 "6 - Misc  💎"
-#set $ws7 "7 - Mail 📩"
 
 set $ws1  "1"
 set $ws2  "2"
@@ -71,10 +61,7 @@ for_window [class="Lxappearance"] floating enable sticky enable border normal
 for_window [title="alsamixer"] floating enable border pixel 1
 for_window [class="Yad"] floating enable
 for_window [class="Gnome-calculator"] floating enable
-
-for_window [class="(?i)gmusibrowser"] floating disabled
-
-
+for_window [class="Yad" title="yad-calendar"] floating enable
 
 for_window [urgent=latest] focus
 ##### COLORS #############
@@ -99,15 +86,17 @@ set $darkblack   #1d2021
 set $transparent #00000000
 
 #                         BORDER     BACKGROUND   TEXT        INDICATOR    CHILD_BORDER
-client.focused            $black     $white        $darkblack      $white  #FF9900
-client.unfocused          $black     $black       $white      $darkblack   $darkblack
+client.focused            #333333    #FF9900      $darkblack  #FF9900      #FF9900
+client.unfocused          #333333    #222222      $white      $darkblack   $darkblack
 client.focused_inactive   $black     $black       $white      $darkblack   $darkblack
 client.urgent             $darkred   $darkred     $black      $darkred     $darkred
 client.background         $black
+client.placeholder #2f343f #2f343f #d8dee8 #2f343f #2f343f
 
 
 ##### BAR #################
 
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 #bar {
 #  #font pango:PragmataPro 12
 #  font pango:Play 11
@@ -133,23 +122,29 @@ client.background         $black
 
 
   ###### START ##############
-  exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
   exec --no-startup-id compton -f
 ##  exec --no-startup-id ~/.config/i3/alternating_layouts.py
   exec --no-startup-id nm-applet
 
-  exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
-  exec --no-startup-id parcellite -d
-  exec --no-startup-id xbindkeys  -d
+  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
 
-#  exec --no-startup-id conky
+  exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
+  exec_always --no-startup-id gnome-power-manager
+#  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
-  set $bg_img ~/Pictures/wallhaven-644734.jpg
+  exec --no-startup-id conky
+
+  #set $bg_img ~/Immagini/walls/wallhalla-dKAq3xkCwKg.jpg
+  #set $bg_img ~/Pictures/banner_Fotolia.jpg
+
+  set $bg_img ~/Immagini/walls/wallhaven-354335.jpg
   exec_always --no-startup-id feh --bg-fill $bg_img
 
 
 
-  ######  exec --no-startup-id xautolock -time 10 -locker 'i3lock -d -c 000000'
+  exec --no-startup-id xautolock -time 10 -locker 'i3lock-fancy'
+  #exec --no-startup-id exec xrand DVI --off
   ###### BIND ##############
 
   # kill window focused
@@ -191,7 +186,7 @@ client.background         $black
   #bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-high
   #bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-low
 
-  set $volume --no-startup-id osd_cat -b percentage -P $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -T Volume: -d 1 -c green -p middle -O 1 -u '#000000' -f -*-*-bold-*-*-*-36-120-*-*-*-*-*-*
+  set $volume --no-startup-id osd_cat -b percentage -P $(amixer -D pulse sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }') -T Volume: -d 1 -c green -p middle -O 1 -u '#000000' -f -*-*-bold-*-*-*-36-120-*-*-*-*-*-*
 
   bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%; exec killall osd_cat; exec $volume
   bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%; exec killall osd_cat; exec $volume
@@ -203,9 +198,10 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 #monitor laptop ->
-bindsym $mod+Shift+v exec xrandr --output VGA-1 --primary --mode 1680x1050 --pos 0x0 --output LVDS-1 --off
+bindsym $mod+Ctrl+v exec xrandr   --output LVDS-1-1 --primary --mode 1600x900 --pos 0x0 --rotate normal --output DP-1 --off 
 # monitor esterno <-
-bindsym $mod+Ctrl+v exec xrandr --output LVSD-1 --primary --mode 1280x800 --pos 0x0 --output VGA-1 --off
+bindsym $mod+Shift+v exec xrandr  --output DP-1  --primary --mode 1920x1080 --pos 0x0 --rotate normal --output LVDS-1-1 --off 
+
   # screenshot
   bindsym --release Print exec --no-startup-id "maim -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
   bindsym --release Shift+Print exec --no-startup-id "maim -s -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
@@ -311,7 +307,8 @@ bindsym p exec ~/bin/PhpStorm-173.4674.45/bin/phpstorm.sh; mode "default"
 # r == ranger
 bindsym r exec xfce4-terminal -e ranger; mode "default"
 # s == sql
-bindsym s exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe; mode "default"
+#bindsym s exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe; mode "default"
+bindsym s exec /usr/share/playonlinux/playonlinux --run "SQLyog (sqlyog2018)"; mode "default"
 # t == thunderbird
 bindsym t exec thunderbird; mode "default"
 # w == tiddlwiki
@@ -322,7 +319,7 @@ bindsym Return mode "default"
 }
 
 
-set $Locker /usr/local/bin/lock_and_blur.sh && sleep 1
+set $Locker i3lock-fancy && sleep 1
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
