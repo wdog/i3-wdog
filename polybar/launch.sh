@@ -4,15 +4,17 @@
 pkill -9 polybar
 
 # Pause while killall completes
-while pgrep -u $UID -x polybar > /dev/null; do sleep 1; done
+while pgrep -x polybar > /dev/null; do sleep 1; done
 
-<<<<<<< HEAD
-polybar --reload top -c ~/.config/polybar/config &
-polybar --reload bottom-c ~/.config/polybar/config &
-=======
-polybar top -c ~/.config/polybar/config &
-polybar bottom -c ~/.config/polybar/config &
->>>>>>> ab59f07ad799b56c3cb9dfd33e9139c42358da84
+polybar --reload top -c ~/.config/polybar/Polybar &
+polybar --reload bottom -c ~/.config/polybar/Polybar &
 
+#polybar top -c ~/.config/polybar/Polybar &
+#polybar bottom -c ~/.config/polybar/Polybar &
+
+# Launch bar(s)
+# polybar dummy -q &
+# polybar top -q &
+# polybar bottom -q  &
 
 echo "polybars launched..."
