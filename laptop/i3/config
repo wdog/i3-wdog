@@ -1,0 +1,341 @@
+# vim: filetype=config
+
+# #---Basic Definitions---# #
+# Needed for i3-gaps
+set $mod Mod1
+#set $term --no-startup-id   i3-sensible-terminal
+set $term --no-startup-id   xfce4-terminal
+for_window [class="^.*"] border pixel 1
+set $height 24
+
+#gaps inner 1
+#gaps outer 1
+font pango:Play 10
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+#hide_edge_borders both
+##### WS ##############
+
+#workspace-edit
+
+set $ws1  "1"
+set $ws2  "2"
+set $ws3  "3"
+set $ws4  "4"
+set $ws5  "5"
+set $ws6  "6"
+set $ws7  "7"
+set $ws8  "8"
+set $ws9  "9"
+set $ws10 "10"
+
+
+workspace_auto_back_and_forth yes
+focus_follows_mouse no
+force_display_urgency_hint 0 ms
+focus_on_window_activation urgent
+floating_minimum_size 150x100
+# set popups during fullscreen mode
+popup_during_fullscreen smart
+# switching window with win+tab
+bindsym $mod+Tab exec --no-startup-id rofi -show window
+# use xprop -> WM_CLASS(STRING) = "gnome-terminal-server", "Gnome-terminal"
+
+for_window [class="Remmina"] floating enable
+for_window [class="(?i)Gmusicbrowser"] floating disable
+for_window [title="wine"] floating disable
+
+for_window [window_role="Msgcompose" class="(?i)Thunderbird"] floating enable
+assign [class="(?i)Firefox"] 1
+assign [class="(?i)Thunderbird"] 10
+assign [class="(?i)Gmusicbriowser"] 8
+assign [class="(?i)Remmina"] 6
+
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [class="(?i)nm-connection-editor"] float
+for_window [class="(?i)pavucontrol"] floating enable, move position mouse
+for_window [class="(?i)pavucontrol" instance="pavucontrol-bar"] move down $height pxing enable
+for_window [class="Galculator"] floating enable border pixel 1
+for_window [class="Lxappearance"] floating enable sticky enable border normal
+for_window [title="alsamixer"] floating enable border pixel 1
+for_window [class="Yad"] floating enable
+for_window [class="Gnome-calculator"] floating enable
+for_window [class="Yad" title="yad-calendar"] floating enable
+
+for_window [urgent=latest] focus
+##### COLORS #############
+
+set_from_resource $darkred     color1  #000000
+set_from_resource $red         color9  #000000
+set_from_resource $darkgreen   color2  #000000
+set_from_resource $green       color10 #000000
+set_from_resource $darkyellow  color3  #000000
+set_from_resource $yellow      color11 #000000
+set_from_resource $darkblue    color4  #000000
+set_from_resource $blue        color12 #000000
+set_from_resource $darkmagenta color5  #000000
+set_from_resource $magenta     color13 #000000
+set_from_resource $darkcyan    color6  #000000
+set_from_resource $cyan        color14 #000000
+set_from_resource $darkwhite   color7  #000000
+set_from_resource $white       color15 #000000
+# Use custom colors for black
+set $black       #282828
+set $darkblack   #1d2021
+set $transparent #00000000
+
+#                         BORDER     BACKGROUND   TEXT        INDICATOR    CHILD_BORDER
+client.focused            #333333    #FF9900      $darkblack  #FF9900      #FF9900
+client.unfocused          #333333    #222222      $white      $darkblack   $darkblack
+client.focused_inactive   $black     $black       $white      $darkblack   $darkblack
+client.urgent             $darkred   $darkred     $black      $darkred     $darkred
+client.background         $black
+client.placeholder #2f343f #2f343f #d8dee8 #2f343f #2f343f
+
+
+##### BAR #################
+
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+#bar {
+#  #font pango:PragmataPro 12
+#  font pango:Play 11
+#  status_command i3blocks
+#
+#  #output primary
+#  position top
+#  mode dock
+#    colors {
+#      statusline         $white
+#      background         $transparent
+#      separator          $transparent
+#
+#      #                  BORDER       BACKGROUND   TEXT
+#      focused_workspace  $transparent $white       $black
+#      inactive_workspace $transparent $transparent $white
+#      active_workspace   $transparent $transparent $white
+#      urgent_workspace   $darkred     $darkred     $transparent
+#      binding_mode       $darkred     $darkred     $transparent
+#   }
+#}
+
+
+
+  ###### START ##############
+
+  exec --no-startup-id compton -f
+##  exec --no-startup-id ~/.config/i3/alternating_layouts.py
+  exec --no-startup-id nm-applet
+
+#  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
+
+#  exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
+#  exec_always --no-startup-id gnome-power-manager
+#  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+
+  #set $bg_img ~/Immagini/walls/wallhalla-dKAq3xkCwKg.jpg
+  #set $bg_img ~/Pictures/banner_Fotolia.jpg
+
+  set $bg_img ~/Pictures/walls/wallheaven.jpg
+  exec_always --no-startup-id feh --bg-fill $bg_img
+
+
+
+  exec --no-startup-id xautolock -time 10 -locker 'i3lock-fancy'
+  #exec --no-startup-id exec xrand DVI --off
+  ###### BIND ##############
+
+
+  bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 
+  bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 
+
+  # kill window focused
+  bindsym $mod+Shift+q kill
+
+  # start a terminal
+  bindsym $mod+Return exec rxvt
+
+  # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+  bindsym $mod+Shift+r restart
+
+  # reload the configuration file
+  bindsym $mod+Shift+c reload
+
+  # dmenu
+  bindsym $mod+d			exec --no-startup-id dmenu_run -l 5 -nb black -nf white -sb yellow -sf black
+  bindsym $mod+Shift+d		gaps inner current set 0; gaps outer current set 0
+  bindsym $mod+Ctrl+d		  gaps inner current set 7; gaps outer current set 7
+  bindsym $mod+Shift+s sticky toggle
+
+  bindsym $mod+q exec ~/.config/i3/launcher_app.sh
+  # rofi bindings
+  #bindsym F10 exec rofi -modi drun -show drun -lines 10 -eh 3 -width 100 -padding 700 " -bw 0 -opacity "50 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+  bindsym F10 exec rofi -show run   -lines 3 -eh 2 -width 100 -padding 300 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+
+  # F12 used by firefox dev tools
+  bindsym F8 exec rofi -show window -lines 10 -eh 2 -width 700 -padding 30 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+
+  # quit i3
+  bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+  #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Yes, exit i3' 'gnome-session-quit --force --logout'"
+
+
+  # mode resize
+  bindsym $mod+r mode "resize"
+
+  ##### Pulse Audio controls
+
+  #bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-high
+  #bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5%;exec sleep 0.3;exec notify-send "Volume:" $(pactl list sinks|grep -v 88|grep "Volume: front-left" -m1|awk '{print $5}') -i notification-audio-volume-low
+
+  set $volume --no-startup-id osd_cat -b percentage -P $(amixer -D pulse sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }') -T Volume: -d 1 -c green -p middle -O 1 -u '#000000' -f -*-*-bold-*-*-*-36-120-*-*-*-*-*-*
+
+  bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%; exec killall osd_cat; exec $volume
+  bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%; exec killall osd_cat; exec $volume
+  bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle; exec notify-send "Mute: " -i notification-audio-volume-muted
+
+  # Media player controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+#monitor laptop ->
+bindsym $mod+Ctrl+v exec xrandr   --output LVDS-1-1 --primary --mode 1600x900 --pos 0x0 --rotate normal --output DP-1 --off 
+# monitor esterno <-
+bindsym $mod+Shift+v exec xrandr  --output DP-1  --primary --mode 1920x1080 --pos 0x0 --rotate normal --output LVDS-1-1 --off 
+
+  # screenshot
+  bindsym --release Print exec --no-startup-id "maim -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
+  bindsym --release Shift+Print exec --no-startup-id "maim -s -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
+
+  # change focus
+  bindsym $mod+Left focus left
+  bindsym $mod+Down focus down
+  bindsym $mod+Up focus up
+  bindsym $mod+Right focus right
+
+  # alternatively, you can use the cursor keys:
+  bindsym $mod+Shift+Left move left
+  bindsym $mod+Shift+Down move down
+  bindsym $mod+Shift+Up move up
+  bindsym $mod+Shift+Right move right
+
+   # split orientation
+  bindsym $mod+h split h;exec notify-send 'tile horizontally'
+  bindsym $mod+v split v;exec notify-send 'tile vertically'
+  # enter fullscreen mode for the focused container
+  bindsym $mod+f fullscreen toggle
+
+  # navigate workspaces next / previous
+  bindsym $mod+Ctrl+Right workspace next
+  bindsym $mod+Ctrl+Left workspace prev
+
+  # change container layout (stacked, tabbed, toggle split)
+  bindsym $mod+s layout stacking
+  bindsym $mod+w layout tabbed
+  bindsym $mod+e layout toggle split
+
+  # toggle tiling / floating
+  bindsym $mod+Shift+space floating toggle
+
+  # change focus between tiling / floating windows
+  bindsym $mod+space focus mode_toggle
+
+  # focus the parent container
+  bindsym $mod+a focus parent
+
+   # switch to workspace
+  bindsym $mod+1 workspace $ws1
+  bindsym $mod+2 workspace $ws2
+  bindsym $mod+3 workspace $ws3
+  bindsym $mod+4 workspace $ws4
+  bindsym $mod+5 workspace $ws5
+  bindsym $mod+6 workspace $ws6
+  bindsym $mod+7 workspace $ws7
+  bindsym $mod+8 workspace $ws8
+  bindsym $mod+9 workspace $ws9
+  bindsym $mod+0 workspace $ws10
+
+  # move focused container to workspace
+  bindsym $mod+Shift+1 move container to workspace $ws1
+  bindsym $mod+Shift+2 move container to workspace $ws2
+  bindsym $mod+Shift+3 move container to workspace $ws3
+  bindsym $mod+Shift+4 move container to workspace $ws4
+  bindsym $mod+Shift+5 move container to workspace $ws5
+  bindsym $mod+Shift+6 move container to workspace $ws6
+  bindsym $mod+Shift+7 move container to workspace $ws7
+  bindsym $mod+Shift+8 move container to workspace $ws8
+  bindsym $mod+Shift+9 move container to workspace $ws9
+  bindsym $mod+Shift+0 move container to workspace $ws10
+#  bindsym $mod+Tab workspace back_and_forth
+
+  ##### MODE #####################
+
+  mode "resize" {
+
+  # same bindings, but for the arrow keys
+  bindsym Left resize shrink width 10 px or 10 ppt
+  bindsym Down resize grow height 10 px or 10 ppt
+  bindsym Up resize shrink height 10 px or 10 ppt
+  bindsym Right resize grow width 10 px or 10 ppt
+
+  # back to normal: Enter or Escape
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+
+
+bindsym $mod+o mode "$mode_launcher"
+
+mode "$mode_launcher" {
+# a == audio
+
+bindsym a	exec $term -e pulsemixer; mode "default"
+# c == chrome
+bindsym c exec google-chrome; mode "default"
+# f == firefox
+bindsym f exec firefox; mode "default"
+# i == info
+bindsym i exec $term -e htop; mode "default"
+# m == calculator
+bindsym m exec gnome-calculator; mode "default"
+# n == nautilus
+bindsym n exec nautilus ; mode "default"
+# o == office
+bindsym o exec libreoffice; mode "default"
+# p == phpstorm
+bindsym p exec ~/bin/PhpStorm-173.4674.45/bin/phpstorm.sh; mode "default"
+# r == ranger
+bindsym r exec xfce4-terminal -e ranger; mode "default"
+# s == sql
+#bindsym s exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe; mode "default"
+bindsym s exec /usr/share/playonlinux/playonlinux --run "SQLyog (sqlyog2018)"; mode "default"
+# t == thunderbird
+bindsym t exec thunderbird; mode "default"
+# w == tiddlwiki
+bindsym w exec ~/bin/TiddlyDesktop-linux64-v0.0.13/nw ; mode "default"
+
+bindsym Escape mode "default"
+bindsym Return mode "default"
+}
+
+
+set $Locker i3lock-fancy && sleep 1
+
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+y mode "$mode_system"
