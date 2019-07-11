@@ -6,14 +6,14 @@ set $mod Mod1
 #set $term --no-startup-id   i3-sensible-terminal
 set $term --no-startup-id   xfce4-terminal
 for_window [class="^.*"] border pixel 1
-set $height 34
+set $height 24
 
-gaps inner 1
-gaps outer 1
+#gaps inner 1
+#gaps outer 1
 font pango:Play 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
-hide_edge_borders both
+#hide_edge_borders both
 ##### WS ##############
 
 #workspace-edit
@@ -127,18 +127,15 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 ##  exec --no-startup-id ~/.config/i3/alternating_layouts.py
   exec --no-startup-id nm-applet
 
-  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
+#  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
+   exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 
+   #eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
 
-  exec --no-startup-id /usr/lib/gnome-settings-daemon/gsd-xsettings
-  exec_always --no-startup-id gnome-power-manager
-#  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-
-  exec --no-startup-id conky
 
   #set $bg_img ~/Immagini/walls/wallhalla-dKAq3xkCwKg.jpg
   #set $bg_img ~/Pictures/banner_Fotolia.jpg
 
-  set $bg_img ~/Immagini/walls/wallhaven-354335.jpg
+  set $bg_img ~/Pictures/walls/wallheaven.jpg
   exec_always --no-startup-id feh --bg-fill $bg_img
 
 
@@ -147,11 +144,15 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
   #exec --no-startup-id exec xrand DVI --off
   ###### BIND ##############
 
+
+  bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 
+  bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 
+
   # kill window focused
   bindsym $mod+Shift+q kill
 
   # start a terminal
-  bindsym $mod+Return exec xfce4-terminal
+  bindsym $mod+Return exec rxvt
 
   # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
   bindsym $mod+Shift+r restart
