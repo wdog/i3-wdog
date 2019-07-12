@@ -1,83 +1,67 @@
+! URxvt
 
-Xft.dpi: 96
-Xft.antialias: true
-Xft.hinting: true
-Xft.rgba: rgb
-Xft.autohint: false
-Xft.hintstyle: hintfull
+! General settings
+URxvt.saveLines: 12000
+URxvt.scrollBar: False
+URxvt.scrollstyle: rxvt
+URxvt.termName: xterm-256color
+URxvt.urgentOnBell: True
+URxvt.cursorBlink: True 
+
+
+! Fonts
+URxvt.font: xft:SauceCodePro Nerd Font Mono:pixelsize=15
+URxvt.letterSpace: -1
+URxvt*lineSpace: -1
+
+#include </home/wdog/.Xcolors.isotope.dark>
+!#include </home/wdog/.Xcolors.londontube.dark>
+!#include </home/wdog/.Xcolors.paraiso.dark>
+!#include </home/wdog/.Xcolors.seul>
+
+
+!Disables the insanely annoying Ctrl+Shift shortcut that enters ISO14755 mode
+URxvt.iso14755:    false
+URxvt.iso14755_52: false
+
+! HOME END KEYS
+URxvt.keysym.Home: \033[1~
+URxvt.keysym.End: \033[4~
+URxvt.keysym.KP_Home: \033[1~
+URxvt.keysym.KP_End:  \033[4~
+
+
+! extensions
+
+!URxvt.perl-ext: default,clipboard,url-select
+!URxvt.keysym.M-u: perl:url-select:select_next
+
+URxvt.clipboard.autocopy: true
+URxvt.clipboard.copycmd: xsel -ib
+URxvt.clipboard.pastecmd: xsel -ob
+
+
+URxvt.perl-ext-common: default,matcher,resize-font,clipboard
+
+! highlight links
+URxvt.matcher.rend.0: Uline Bold fg5
+! copy paste
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+
+ URxvt.keysym.C-Down:  resize-font:smaller
+ URxvt.keysym.C-Up:    resize-font:bigger
+
+
+
+
+! dpi mode
+!Xft.dpi: 190
+Xft.autohint: 0
 Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
 
-
-!=== rofi ===
-
-rofi.modi:                           ssh,window,drun,run
-rofi.sidebar-mode:                   true
-rofi.terminal:                       termite
-rofi.ssh-client:                     ssh
-rofi.ssh-command:                    {terminal} -e "{ssh-client} {host}"
-rofi.opacity:                        100
-rofi.width:                          50
-rofi.lines:                          8
-rofi.columns:                        1
-rofi.font:                           Inconsolata 24
-rofi.fg:                             #5294E2
-rofi.bg:                             #5d729f
-rofi.fg-active:                      #34405a
-rofi.fg-urgent:                      #34405a
-rofi.hlfg-active:                    #5e73a0
-rofi.hlfg-urgent:                    #5e73a0
-rofi.bg-active:                      #34405a
-rofi.bg-urgent:                      #34405a
-rofi.hlbg-active:                    #5d729f
-rofi.hlbg-urgent:                    #5d729f
-rofi.bgalt:                          #5671a0
-rofi.hlfg:                           #34405a
-rofi.hlbg:                           #34405a
-rofi.bc:                             #789ee1
-! State:           'bg',     'fg',     'bgalt',  'hlbg',   'hlfg'
-rofi.color-normal: #353944,  #FFFFFF,  #353944,  #5294E2,  #FFFFFF
-
-!                  'background', 'border'
-rofi.color-window: #353944,      #404552
-rofi.bw:                             10
-rofi.location:                       0
-rofi.padding:                        20
-rofi.levenshtein-sort:               true
-rofi.case-sensitive:                 false
-rofi.fuzzy:                          false
-rofi.line-margin:                    2
-rofi.separator-style:                solid
-rofi.hide-scrollbar:                 true
-rofi.markup-rows:                    false
-rofi.scrollbar-width: 8
-
-
-
-! === gruvbox color scheme ===
-*background: #1d2021
-*foreground: #ebdbb2
-! Black + DarkGrey
-*color0:  #282828
-*color8:  #928374
-! DarkRed + Red
-*color1:  #cc241d
-*color9:  #fb4934
-! DarkGreen + Green
-*color2:  #98971a
-*color10: #b8bb26
-! DarkYellow + Yellow
-*color3:  #d79921
-*color11: #fabd2f
-! DarkBlue + Blue
-*color4:  #458588
-*color12: #83a598
-! DarkMagenta + Magenta
-*color5:  #b16286
-*color13: #d3869b
-! DarkCyan + Cyan
-*color6:  #689d6a
-*color14: #8ec07c
-! LightGrey + White
-!*color7:  #a89984
-*color7:  #a89000
-*color15: #ebdbb2
+twobwm.enable_compton: true

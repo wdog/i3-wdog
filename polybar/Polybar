@@ -1,9 +1,12 @@
 ;=====================================================
 ;
-;   To learn more about how to configure Polybar
-;   go to https://github.com/jaagr/polybar
 ;
-;   The README contains alot of information
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
 ;
 ;=====================================================
 [colors]
@@ -16,20 +19,20 @@ foreground     = #eee
 foreground-alt = #555
 primary        = #ffb52a
 secondary      = #e60053
-tertiary       = #20C997
+tertiary       = #f2bd00
 urgent         = #bd2c40
 
 [bar/top]
 ; monitor           = ${env:MONITOR:HDMI-1}
 ; monitor           = DP-1
 width               = 100%
-height              = 32
+height              = 24
 radius              = 0.0
 fixed-center        = true
 bottom              = false
 background          = ${colors.bg_trans}
 foreground          = ${colors.foreground}
-line-size           = 3
+line-size           = 2
 line-color          = #f00
 border-size         = 0
 border-color        = #00000000
@@ -38,15 +41,13 @@ padding-right       = 2
 module-margin-left  = 2
 module-margin-right = 2
 
-font-0              = Play:pixelsize=10;1
-font-1              = RobotoMono Nerd Font:pixelsize=10;1
-font-2              = Font Awesome 5 Free:pixelsize=10;1
-font-3              = DejaVu Sans Mono:pixelsize=10;1
-font-4              = fixed:size=10;0
+font-0              = Play:style=Regulari:pixelsize=9;1  
+font-1              = RobotoMono Nerd Font:pixelsize=9;1
+font-2              = Noto Sans Mono:style=Regular:pixelsize=9
 
 modules-left        = i3 eth wlan
-modules-center      = tiddly thunar telegram player melpo volume
-modules-right       = time
+modules-center      = thunar telegram player 
+modules-right       = backlight volume time
 
 
 tray-position       = right
@@ -59,13 +60,13 @@ tray-background     = #aa000000
 
 ; monitor = DP-1
 width               = 100%
-height              = 32
+height              = 24
 radius              = 0.0
 fixed-center        = true
 bottom              = true
 background          = ${colors.bg_trans}
 foreground          = ${colors.foreground}
-line-size           = 3
+line-size           = 2
 line-color          = #f00
 border-size         = 0
 border-color        = #00000000
@@ -74,16 +75,16 @@ padding-right       = 2
 module-margin-left  = 2
 module-margin-right = 2
 
-font-0              = Play:pixelsize=10;1
-font-1              = RobotoMono Nerd Font:pixelsize=10;1
-font-2              = Font Awesome 5 Free:pixelsize=10;1
-font-3              = DejaVu Sans Mono:pixelsize=10;1
-font-4              = fixed:size=10;0
+font-0              = Play:pixelsize=9;1  
+font-1              = RobotoMono Nerd Font:pixelsize=9;1
+font-2              = Font Awesome Free 5:pixelsize=9;1
+font-3              = DejaVu Sans Mono:pixelsize=9;1
+font-4              = fixed:size=9;0
 
 modules-left = memory cpu
-modules-center = mpris
+modules-center = 
 
-modules-right = filesystem ping_gw ping_google temperature battery
+modules-right = filesystem ping_gw ping_google temperature battery uptime
 
 cursor-click = pointer
 
@@ -97,11 +98,11 @@ type = internal/fs
 interval = 25
 
 mount-0 = /
-mount-1 = /home
 
-label-mounted = %{F#0a81f5}[%mountpoint%%{F-}: %percentage_used%%]
+label-mounted = %{F#0a81f5}[ %mountpoint% %{F-} %percentage_used%% ]
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
+label-mounted-underline = #0a81f5
 
 [module/i3]
 type = internal/i3
@@ -156,57 +157,42 @@ ws-icon-default =  
 
 [module/cpu]
 type = internal/cpu
-format-prefix = " "
+format-prefix = "  "
 format = <label> <ramp-coreload>
 ramp-coreload-0 = ▁
-ramp-coreload-0-font = 4
+ramp-coreload-0-font = 3
 ramp-coreload-0-foreground = #0f0
 ramp-coreload-1 = ▂
-ramp-coreload-1-font = 4
+ramp-coreload-1-font = 3
 ramp-coreload-1-foreground = #ffff88
 ramp-coreload-2 = ▃
-ramp-coreload-2-font = 4
+ramp-coreload-2-font = 3
 ramp-coreload-2-foreground = #ff9900
 ramp-coreload-3 = ▄
-ramp-coreload-3-font = 4
+ramp-coreload-3-font = 3
 ramp-coreload-3-foreground = #FF0000
 
-
-;ramp-coreload-underline = ${colors.primary}
-format-prefix-foreground = ${colors.primary}
-ramp-coreload-foreground = ${colors.primary}
+format-prefix-foreground = ${colors.tertiary}
+ramp-coreload-foreground = ${colors.tertiary}
+format-underline         = ${colors.tertiary}
+format-foreground         = ${colors.foreground}
 interval = 2
 label = "%percentage%%"
-label-padding = 3
-
+label-padding = 2
 
 [module/memory]
-type = internal/memory
-interval = 2
-format = <label> <bar-used>
-format-prefix = " "
-label = %gb_used%/%gb_total%
-label-foreground = ${root.foreground}
+type                     = internal/memory
+interval                 = 2
+format                   = <label>
+label                    = %gb_used% / %gb_total%
 
-bar-used-width = 15
-bar-used-foreground-0 = #0F0
-bar-used-foreground-1 = #0F0
-bar-used-foreground-2 = #0F0
-bar-used-foreground-3 = #0F0
-bar-used-foreground-4 = #FF0
-bar-used-foreground-5 = #F90
-bar-used-foreground-6 = #F00
-bar-used-indicator = |
-bar-used-indicator-font = 0
-bar-used-gradient = true
-bar-used-font = 2
-bar-used-indicator-foreground = #ff
-bar-used-fill = |
-bar-used-fill-font = 2
-bar-used-empty = -
-bar-used-empty-font = 2
-bar-used-empty-foreground = ${colors.foreground-alt}
-;bar-used-empty-foreground = #444444
+format-foreground        = ${colors.primary}
+format-prefix            = " " 
+format-prefix-foreground = ${colors.tertiary}
+format-underline         = ${colors.tertiary}
+label-foreground         = ${colors.foreground}
+label-underline          = ${colors.tertiary}
+
 
 [module/time]
 type = custom/script
@@ -214,39 +200,33 @@ exec = ~/.config/polybar/scripts/calendar.sh
 interval = 5
 click-left = ~/.config/polybar/scripts/calendar.sh --popup
 format-underline = #268bd2
+format-foreground= #FFFFFF
+format-prefix-color = red
+format-prefix= " "
 
 ###### VOLUME ######
 
 
 [module/volume]
-type = internal/alsa
+type                        = internal/alsa
+format-volume               = <label-volume> <bar-volume>
+label-volume                =  %percentage:2%%
 
-format-volume = <label-volume> <bar-volume>
-label-volume = 
-label-volume-foreground = ${root.foreground}
-
-format-muted-prefix = "  "
-label-muted = "[muted]"
-format-muted-foreground = ${colors.primary}
-
-bar-volume-width = 15
-bar-volume-foreground-0 = #00FF00
-bar-volume-foreground-1 = #00CC00
-bar-volume-foreground-2 = #FFB52A
-bar-volume-foreground-3 = #FFB52A
-bar-volume-foreground-4 = #FFB52A
-bar-volume-foreground-5 = #FF9900
-bar-volume-foreground-6 = #FF0000
-bar-volume-gradient = true
-bar-volume-indicator = ▪
-bar-volume-indicator-font = 2
-bar-volume-fill = ▉
-bar-volume-fill-font = 2
-bar-volume-empty =  ▬
-bar-volume-empty-font = 2
-bar-volume-empty-foreground = ${colors.foreground}
-
-interval = 5
+label-volume-foreground     = ${root.foreground}
+format-muted-prefix         = "  "
+label-muted                 = "[muted]"
+format-muted-foreground     = ${colors.primary}
+bar-volume-width            = 10
+bar-volume-foreground-0     = #FFB52A
+bar-volume-gradient         = true
+bar-volume-indicator        = ●
+bar-volume-indicator-font   = 4
+bar-volume-fill             = ●
+bar-volume-fill-font        = 4
+bar-volume-empty            = ●
+bar-volume-empty-font       = 4
+bar-volume-empty-foreground = ${colors.foreground-alt}
+interval                    = 5
 
 [settings]
 screenchange-reload = true
@@ -282,40 +262,18 @@ content-background = ${colors.bg_trans}
 content-padding    = 2
 
 
-#### AUDIO NOTIFICATION #####
-
-[module/mpris]
-type             = custom/script
-exec             = ~/.config/polybar/scripts/player-mpris-tail.py -f '{icon} {track}) {title} - [ {artist} ]'
-tail             = true
-label            = %output%
-click-left       = ~/.config/polybar/scripts/player-mpris-tail.py previous
-click-right      = ~/.config/polybar/scripts/player-mpris-tail.py next
-click-middle     = ~/.config/polybar/scripts/player-mpris-tail.py play-pause
-label-foreground = #000
-label-background = #f90
-label-underline  = ${colors.foreground-alt}
-label-padding    = 5
 
 ##### TELEGRAM #####
 
 [module/telegram]
 type       = custom/text
-click-left = ~/bin/Telegram.dir/Telegram
+click-left = ~/bin/Telegram/Telegram
 content    = "   "
 content-underline  = ${colors.primary}
 content-foreground = ${colors.primary}
 content-background = ${colors.bg_trans}
 
-##### REMMINA #####
 
-[module/melpo]
-type = custom/text
-click-left = remmina -c ~/.remmina/1531750845419.remmina
-content = "  "
-content-underline  = ${colors.secondary}
-content-foreground = ${colors.secondary}
-content-background = ${colors.bg_trans}
 
 ##### GMUSISCBROWSER #####
 
@@ -332,36 +290,40 @@ content-background = ${colors.bg_trans}
 [module/ping_gw]
 type                     = custom/script
 format-prefix            = "  "
-exec                     = ~/bin/ping_gw.sh 192.168.169.1
+exec                     = ~/bin/ping_gw.sh 192.168.88.1
 format-underline         = #00ff00
 format-prefix-foreground = #00ff00
 label-foreground         = #00ff00
-label-padding            = 3
+label-padding            = 1
 
 ##### PING GOOGLE ####
 
 [module/ping_google]
 type                     = custom/script
-format-prefix            = "   "
+format-prefix            = "  "
 exec                     = ~/bin/ping_gw.sh 8.8.8.8
 format-underline         = #00ff00
 format-prefix-foreground = #00ff00
 label-foreground         = #00ff00
-label-padding            = 3
+label-padding            = 1
+
+
 
 ##### BATTERY ######
 
 [module/battery]
 type = internal/battery
-full-at = 98
+full-at = 99
 battery = BAT0
-adapter = AC0
+adapter = AC
 poll-interval = 5
 time-format = %H:%M
-format-underline = #55aa55
 label-charging = %percentage%%
 label-discharging = %percentage%%
 label-full = 
+
+format-discharging-underline= ${colors.secondary}
+
 format-charging = <animation-charging> <label-charging>
 format-charging-foreground = ${colors.foreground-alt}
 format-discharging = <ramp-capacity> <label-discharging>
@@ -388,7 +350,7 @@ animation-charging-framerate = 750
 
 [module/eth]
 type = internal/network
-interface = eno1
+interface = enp0s25
 interval = 0.5
 label-connected = %{T4} [%ifname%]  %{F#0f0}%local_ip% %{F#f90}[%upspeed%] %{F#0f0}[%downspeed%] %{T-}
 downspeed-minwidth = 5
@@ -399,12 +361,12 @@ upspeed-minwidth = 5
 [module/wlan]
 type                           = internal/network
 interface                      = wlp3s0
-interval                       = 10
+interval                       = 1
 
 format-connected               = <label-connected>
 format-disconnected            = <label-disconnected>
 
-label-connected = %{T4}[%ifname%]  %essid% %{F#0f0}%local_ip% %{F#f90}[%upspeed%] %{F#0f0}[%downspeed%] %{T-}
+label-connected = %{T4}  %essid% %local_ip% %{F#f90}%upspeed% %{F#0f0}%downspeed% %{T-}
 downspeed-minwidth = 5
 upspeed-minwidth = 5
 label-disconnected-foreground  = #990000
@@ -426,59 +388,44 @@ format-underline = #0088CC
 format-warn = <ramp> <label-warn>
 format-warn-underline = ${self.format-underline}
 
-label =   %temperature-c%
+label = %temperature-c%
 labeil-foreground = #0088CC
 label-warn = %temperature-c%
 label-warn-foreground = ${colors.secondary}
 
-ramp-0 = 
+ramp-0 = 
 ramp-1 = 
-ramp-2 = 
+ramp-2 = 
 ramp-foreground = ${colors.foreground-alt}
 
-##### FAST MENU #####
+##### BACKLIGHT #####
 
-[module/menu]
-type = custom/menu
+[module/backlight]
+type = internal/xbacklight
 
-; "menu-LEVEL-N" has the same properties as "label-NAME" with
-; the additional "exec" property
-;
-; Available exec commands:
-;   menu-open-LEVEL
-;   menu-close
-; Other commands will be executed using "/usr/bin/env sh -c $COMMAND"
-;
+label =  %percentage:3:3:%%  
+format = <label> <bar>
+
+bar-width = 10
+bar-indicator = ●
+bar-indicator-foreground = #FFF
+bar-indicator-font = 2
+bar-fill = ●
+bar-fill-font = 2
+bar-fill-foreground = #fea000
+bar-empty = ●
+bar-empty-font = 2
+bar-empty-foreground = ${colors.foreground-alt}
+
+[module/uptime]
+type                     = custom/script
+format-prefix            = "  "
+exec                     = uptime -p
+format-underline         = #ffff00
+format-prefix-foreground = #ffff00
+label-foreground         = #ffff00
+label-padding            = 1
 
 
-format-spacing = 1
-expand-right = true
+# vim:syntax=dosini
 
-label-open = "  "
-label-open-font = 1
-label-open-background = ${colors.bg_trans}
-label-open-foreground = ${colors.primary}
-label-close = "  Cancel "
-label-close-font = 1
-label-close-background = ${colors.background}
-label-close-foreground = ${colors.secondary}
-label-separator = |
-label-separator-foreground = ${colors.foreground-alt}
-
-
-menu-0-0 = Browsers
-menu-0-0-exec = menu-open-1
-menu-0-1 = Multimedia
-menu-0-1-exec = menu-open-2
-
-menu-1-0 = Firefox
-menu-1-0-exec = firefox &
-menu-1-1 = Chrome
-menu-1-1-exec = google-chrome &
-
-menu-2-0 = Gimp
-menu-2-0-exec = gimp &
-menu-2-1 = Scrot
-menu-2-1-exec = scrot &
-
-# vi: ft=dosini
