@@ -4,7 +4,7 @@
 # Needed for i3-gaps
 set $mod Mod1
 #set $term --no-startup-id   i3-sensible-terminal
-set $term --no-startup-id   xfce4-terminal
+set $term --no-startup-id  urxvt 
 for_window [class="^.*"] border pixel 1
 set $height 24
 
@@ -64,6 +64,21 @@ for_window [class="Gnome-calculator"] floating enable
 for_window [class="Yad" title="yad-calendar"] floating enable
 
 for_window [urgent=latest] focus
+
+
+# #---Dropdown Windows---# #
+# General dropdown window traits. The order can matter.
+for_window [instance="dropdown_*"] floating enable
+for_window [instance="dropdown_*"] move scratchpad
+for_window [instance="dropdown_*"] resize set 725 500 
+for_window [instance="dropdown_*"] border pixel 5
+
+exec_always --no-startup-id $term -name dropdown_ter
+exec_always --no-startup-id speedcrunch -name dropdown_cal
+
+bindsym $mod+u [instance="dropdown_ter"] scratchpad show; [instance="dropdown_ter"] move position center
+bindsym $mod+c [instance="dropdown_cal"] scratchpad show; [instance="dropdown_cal"] move position center
+
 ##### COLORS #############
 
 set_from_resource $darkred     color1  #000000
@@ -94,56 +109,25 @@ client.background         $black
 client.placeholder #2f343f #2f343f #d8dee8 #2f343f #2f343f
 
 
-##### BAR #################
+  ##### BAR #################
 
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-#bar {
-#  #font pango:PragmataPro 12
-#  font pango:Play 11
-#  status_command i3blocks
-#
-#  #output primary
-#  position top
-#  mode dock
-#    colors {
-#      statusline         $white
-#      background         $transparent
-#      separator          $transparent
-#
-#      #                  BORDER       BACKGROUND   TEXT
-#      focused_workspace  $transparent $white       $black
-#      inactive_workspace $transparent $transparent $white
-#      active_workspace   $transparent $transparent $white
-#      urgent_workspace   $darkred     $darkred     $transparent
-#      binding_mode       $darkred     $darkred     $transparent
-#   }
-#}
-
-
+  exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
   ###### START ##############
 
   exec --no-startup-id compton -f
-##  exec --no-startup-id ~/.config/i3/alternating_layouts.py
   exec --no-startup-id nm-applet
 
 #  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
    exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 
    #eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
 
-
-  #set $bg_img ~/Immagini/walls/wallhalla-dKAq3xkCwKg.jpg
-  #set $bg_img ~/Pictures/banner_Fotolia.jpg
-
   set $bg_img ~/Pictures/walls/wallheaven.jpg
   exec_always --no-startup-id feh --bg-fill $bg_img
-
-
 
   exec --no-startup-id xautolock -time 10 -locker 'i3lock-fancy'
   #exec --no-startup-id exec xrand DVI --off
   ###### BIND ##############
-
 
   bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 
   bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 
@@ -152,7 +136,7 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
   bindsym $mod+Shift+q kill
 
   # start a terminal
-  bindsym $mod+Return exec rxvt
+  bindsym $mod+Return exec urxvt
 
   # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
   bindsym $mod+Shift+r restart

@@ -36,12 +36,13 @@ URxvt.keysym.KP_End:  \033[4~
 !URxvt.perl-ext: default,clipboard,url-select
 !URxvt.keysym.M-u: perl:url-select:select_next
 
+URxvt.perl-ext: default,selection-to-clipboard
 URxvt.clipboard.autocopy: true
 URxvt.clipboard.copycmd: xsel -ib
 URxvt.clipboard.pastecmd: xsel -ob
 
 
-URxvt.perl-ext-common: default,matcher,resize-font,clipboard
+URxvt.perl-ext-common: default,matcher,resize-font
 
 ! highlight links
 URxvt.matcher.rend.0: Uline Bold fg5
@@ -49,10 +50,8 @@ URxvt.matcher.rend.0: Uline Bold fg5
 URxvt.keysym.M-c: perl:clipboard:copy
 URxvt.keysym.M-v: perl:clipboard:paste
 
- URxvt.keysym.C-Down:  resize-font:smaller
- URxvt.keysym.C-Up:    resize-font:bigger
-
-
+URxvt.keysym.C-Down:  resize-font:smaller
+URxvt.keysym.C-Up:    resize-font:bigger
 
 
 ! dpi mode
