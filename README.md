@@ -14,3 +14,4 @@ i3-gaps https://github.com/Airblader/i3
 
 yad
 ranger
+rofi
