@@ -2,16 +2,13 @@
 
 # Telegram
 
-RUN=$(echo "gnome-calculator
-Telegram
+RUN=$(echo "Telegram
 firefox
 google-chrome
 thunderbird
 gmusicbrowser
 spotify
 thunar
-nautilus
-remmina
 blueman-manager
 pavucontrol
 " | rofi -dmenu -show-icons -p "RUN::")

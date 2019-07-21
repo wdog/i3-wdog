@@ -42,13 +42,11 @@ bindsym $mod+Tab exec --no-startup-id rofi -show window
 # use xprop -> WM_CLASS(STRING) = "gnome-terminal-server", "Gnome-terminal"
 
 for_window [class="Remmina"] floating enable
-for_window [class="(?i)Gmusicbrowser"] floating disable
 for_window [title="wine"] floating disable
 
 for_window [window_role="Msgcompose" class="(?i)Thunderbird"] floating enable
 assign [class="(?i)Firefox"] 1
 assign [class="(?i)Thunderbird"] 10
-assign [class="(?i)Gmusicbriowser"] 8
 assign [class="(?i)Remmina"] 6
 
 for_window [window_type="dialog"] floating enable
@@ -73,8 +71,8 @@ for_window [instance="dropdown_*"] move scratchpad
 for_window [instance="dropdown_*"] resize set 725 500 
 for_window [instance="dropdown_*"] border pixel 5
 
-exec_always --no-startup-id $term -name dropdown_ter
-exec_always --no-startup-id speedcrunch -name dropdown_cal
+exec --no-startup-id $term -name dropdown_ter
+exec --no-startup-id speedcrunch -name dropdown_cal
 
 bindsym $mod+u [instance="dropdown_ter"] scratchpad show; [instance="dropdown_ter"] move position center
 bindsym $mod+c [instance="dropdown_cal"] scratchpad show; [instance="dropdown_cal"] move position center
@@ -109,28 +107,28 @@ client.background         $black
 client.placeholder #2f343f #2f343f #d8dee8 #2f343f #2f343f
 
 
+  ##### XRAND ##############
+  exec_always --no-startup-id $HOME/.config/i3/xrandr_daemon.sh
   ##### BAR #################
-
   exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-
   ###### START ##############
 
   exec --no-startup-id compton -f
   exec --no-startup-id nm-applet
 
 #  exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 & eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
-   exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 
-   #eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
+exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 
+#eval $(gnome-keyring-daemon -s --components=pkcs11,secrets,ssh,gpg)
 
-  set $bg_img ~/Pictures/walls/wallheaven.jpg
-  exec_always --no-startup-id feh --bg-fill $bg_img
+set $bg_img ~/Pictures/walls/wallheaven.jpg
+exec_always --no-startup-id feh --bg-scale $bg_img
 
-  exec --no-startup-id xautolock -time 10 -locker 'i3lock-fancy'
-  #exec --no-startup-id exec xrand DVI --off
-  ###### BIND ##############
+exec --no-startup-id xautolock -time 10 -locker 'i3lock-fancy'
+#exec --no-startup-id exec xrand DVI --off
+###### BIND ##############
 
-  bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 
-  bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 
 
   # kill window focused
   bindsym $mod+Shift+q kill
@@ -153,10 +151,10 @@ client.placeholder #2f343f #2f343f #d8dee8 #2f343f #2f343f
   bindsym $mod+q exec ~/.config/i3/launcher_app.sh
   # rofi bindings
   #bindsym F10 exec rofi -modi drun -show drun -lines 10 -eh 3 -width 100 -padding 700 " -bw 0 -opacity "50 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
-  bindsym F10 exec rofi -show run   -lines 3 -eh 2 -width 100 -padding 300 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+  bindsym F10 exec rofi -show run   -lines 10   " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
 
   # F12 used by firefox dev tools
-  bindsym F8 exec rofi -show window -lines 10 -eh 2 -width 700 -padding 30 " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
+  bindsym F8 exec rofi -show window -lines 10  " -bw 0 -opacity "85 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "Play 10"
 
   # quit i3
   bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
@@ -178,14 +176,14 @@ client.placeholder #2f343f #2f343f #d8dee8 #2f343f #2f343f
   bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle; exec notify-send "Mute: " -i notification-audio-volume-muted
 
   # Media player controls
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+  bindsym XF86AudioPlay exec playerctl play-pause
+  bindsym XF86AudioNext exec playerctl next
+  bindsym XF86AudioPrev exec playerctl previous
 
 #monitor laptop ->
-bindsym $mod+Ctrl+v exec xrandr   --output LVDS-1-1 --auto --mode 1600x900 --pos 0x0 --output DP-1 --off 
+bindsym $mod+Ctrl+v exec xrandr   --output LVDS-1 --auto --mode 1280x800 --pos 0x0 --output VGA-1 --off && sleep 2 && i3-msg restart 
 # monitor esterno <-
-bindsym $mod+Shift+v exec xrandr  --output DP-1  --auto --mode 1920x1080 --pos 0x0 --output LVDS-1-1 --off 
+bindsym $mod+Shift+v exec xrandr  --output VGA-1  --auto --mode 1680x1050 --pos 0x0 --output LVDS-1 --off && sleep 1 && i3-msg restart
 
   # screenshot
   bindsym --release Print exec --no-startup-id "maim -p 0 -c 0.96,0.5,0.09 $HOME/Pictures/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png"
@@ -204,10 +202,10 @@ bindsym $mod+Shift+v exec xrandr  --output DP-1  --auto --mode 1920x1080 --pos 0
   bindsym $mod+Shift+Right move right
 
    # split orientation
-  bindsym $mod+h split h;exec notify-send 'tile horizontally'
-  bindsym $mod+v split v;exec notify-send 'tile vertically'
-  # enter fullscreen mode for the focused container
-  bindsym $mod+f fullscreen toggle
+   bindsym $mod+h split h;exec notify-send 'tile horizontally'
+   bindsym $mod+v split v;exec notify-send 'tile vertically'
+   # enter fullscreen mode for the focused container
+   bindsym $mod+f fullscreen toggle
 
   # navigate workspaces next / previous
   bindsym $mod+Ctrl+Right workspace next
@@ -228,16 +226,16 @@ bindsym $mod+Shift+v exec xrandr  --output DP-1  --auto --mode 1920x1080 --pos 0
   bindsym $mod+a focus parent
 
    # switch to workspace
-  bindsym $mod+1 workspace $ws1
-  bindsym $mod+2 workspace $ws2
-  bindsym $mod+3 workspace $ws3
-  bindsym $mod+4 workspace $ws4
-  bindsym $mod+5 workspace $ws5
-  bindsym $mod+6 workspace $ws6
-  bindsym $mod+7 workspace $ws7
-  bindsym $mod+8 workspace $ws8
-  bindsym $mod+9 workspace $ws9
-  bindsym $mod+0 workspace $ws10
+   bindsym $mod+1 workspace $ws1
+   bindsym $mod+2 workspace $ws2
+   bindsym $mod+3 workspace $ws3
+   bindsym $mod+4 workspace $ws4
+   bindsym $mod+5 workspace $ws5
+   bindsym $mod+6 workspace $ws6
+   bindsym $mod+7 workspace $ws7
+   bindsym $mod+8 workspace $ws8
+   bindsym $mod+9 workspace $ws9
+   bindsym $mod+0 workspace $ws10
 
   # move focused container to workspace
   bindsym $mod+Shift+1 move container to workspace $ws1
@@ -250,7 +248,7 @@ bindsym $mod+Shift+v exec xrandr  --output DP-1  --auto --mode 1920x1080 --pos 0
   bindsym $mod+Shift+8 move container to workspace $ws8
   bindsym $mod+Shift+9 move container to workspace $ws9
   bindsym $mod+Shift+0 move container to workspace $ws10
-#  bindsym $mod+Tab workspace back_and_forth
+  #  bindsym $mod+Tab workspace back_and_forth
 
   ##### MODE #####################
 
@@ -290,7 +288,7 @@ bindsym o exec libreoffice; mode "default"
 # p == phpstorm
 bindsym p exec ~/bin/PhpStorm-173.4674.45/bin/phpstorm.sh; mode "default"
 # r == ranger
-bindsym r exec xfce4-terminal -e ranger; mode "default"
+bindsym r exec urxvt -e ranger; mode "default"
 # s == sql
 #bindsym s exec wine  ~/.wine/drive_c/Program\ Files/SQLyog/SQLyog.exe; mode "default"
 bindsym s exec /usr/share/playonlinux/playonlinux --run "SQLyog (sqlyog2018)"; mode "default"
@@ -308,16 +306,16 @@ set $Locker i3lock-fancy && sleep 1
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id $Locker, mode "default"
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
-    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
-    bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+bindsym l exec --no-startup-id $Locker, mode "default"
+bindsym e exec --no-startup-id i3-msg exit, mode "default"
+bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
+bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
+bindsym r exec --no-startup-id systemctl reboot, mode "default"
+bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
     bindsym Escape mode "default"
-}
+  }
 
 bindsym $mod+y mode "$mode_system"
